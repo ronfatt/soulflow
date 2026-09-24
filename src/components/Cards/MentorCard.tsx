@@ -35,7 +35,7 @@ export const MentorCard: React.FC<MentorCardProps> = ({
   return (
     <div
       onClick={() => onSelect(mentor)}
-      className="group relative rounded-[28px] overflow-hidden border border-white/10 bg-[#0e1226] cursor-pointer shadow-xl transition-all duration-300 hover:border-[#dfb76c]/40 active:scale-[0.98]"
+      className="group relative rounded-[28px] overflow-hidden specular-card cursor-pointer shadow-xl transition-all duration-300 hover:border-[#dfb76c]/40 active:scale-[0.985]"
     >
       <div className="relative h-32 w-full overflow-hidden">
         <img
@@ -55,7 +55,7 @@ export const MentorCard: React.FC<MentorCardProps> = ({
               className="w-14 h-14 rounded-2xl object-cover border-2 border-[#dfb76c] shadow-gold-glow"
             />
             <div className="pb-0.5 min-w-0">
-              <h3 className="text-xs font-bold text-white flex items-center space-x-1 truncate">
+              <h3 className="font-serif text-sm font-medium text-white flex items-center space-x-1 truncate">
                 <span>{mentor.name}</span>
                 <Sparkles className="w-3 h-3 text-[#dfb76c]" />
               </h3>
@@ -75,9 +75,9 @@ export const MentorCard: React.FC<MentorCardProps> = ({
           {mentor.bio}
         </p>
 
-        <div className="mt-2.5 pt-2 border-t border-white/5 flex items-center justify-between text-[10px] text-stone-400 font-mono">
+        <div className="mt-2.5 pt-2 border-t border-white/[0.05] flex items-center justify-between text-[10px] text-stone-400 font-mono">
           <span>Specialization:</span>
-          <span className="text-[#dfb76c] font-semibold truncate max-w-[170px]">{mentor.specialization}</span>
+          <span className="text-[#dfb76c] font-medium truncate max-w-[170px]">{mentor.specialization}</span>
         </div>
       </div>
     </div>

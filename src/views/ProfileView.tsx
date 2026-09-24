@@ -93,14 +93,17 @@ export const ProfileView: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6 pb-28 pt-3 px-4 max-w-md mx-auto animate-fade-in">
+    <div className="space-y-6 pb-28 pt-3 px-4 max-w-md mx-auto animate-fade-in relative">
+      {/* Subtle Ambient Glow */}
+      <div className="absolute -top-10 inset-x-0 h-64 pointer-events-none bg-gradient-to-b from-[#1b1c38]/30 to-transparent blur-3xl -z-10" />
+
       {/* Top Profile Card */}
-      <div className="relative p-5 rounded-3xl bg-gradient-to-b from-[#181c3a] via-[#141830] to-[#101326] border border-white/10 shadow-2xl text-center">
+      <div className="relative p-5 rounded-3xl specular-card shadow-2xl text-center">
         {/* Switch buttons to Mentor & Admin Portals */}
         <div className="absolute top-4 right-4 flex items-center space-x-1.5">
           <button
             onClick={() => setIsMentorView(true)}
-            className="p-1.5 px-2.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 text-purple-300 text-xs flex items-center space-x-1 transition-colors"
+            className="p-1.5 px-2.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/25 text-purple-300 text-xs flex items-center space-x-1 transition-all active:scale-95"
             title="Mentor Partner Portal"
           >
             <Award className="w-3.5 h-3.5 text-purple-400" />
@@ -109,7 +112,7 @@ export const ProfileView: React.FC = () => {
 
           <button
             onClick={() => setIsAdminView(true)}
-            className="p-1.5 px-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white text-xs flex items-center space-x-1 transition-colors"
+            className="p-1.5 px-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white text-xs flex items-center space-x-1 transition-all active:scale-95"
             title="Admin Dashboard"
           >
             <LayoutDashboard className="w-3.5 h-3.5 text-[#dfb76c]" />
@@ -126,8 +129,8 @@ export const ProfileView: React.FC = () => {
           />
         </div>
 
-        <h2 className="text-lg font-bold text-white tracking-tight">{user.name}</h2>
-        <p className="text-xs text-stone-400 mt-0.5">{user.email}</p>
+        <h2 className="font-serif text-xl font-medium text-white tracking-tight">{user.name}</h2>
+        <p className="text-xs text-stone-400 mt-0.5 tracking-wide">{user.email}</p>
 
         {/* Referred by Banner if applicable */}
         {referringMentor && (

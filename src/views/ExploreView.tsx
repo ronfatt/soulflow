@@ -152,10 +152,10 @@ export const ExploreView: React.FC = () => {
     <div className="space-y-6 pb-24 pt-3 px-4 max-w-md mx-auto animate-fade-in select-none">
       {/* Title */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white">
+        <h1 className="font-serif text-[26px] font-medium tracking-tight text-white/95">
           Explore
         </h1>
-        <p className="text-xs text-stone-400 font-light mt-0.5">
+        <p className="text-xs text-stone-400 font-light mt-0.5 tracking-wide">
           Sacred frequencies, guided sessions and masterclasses
         </p>
       </div>

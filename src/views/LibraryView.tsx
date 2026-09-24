@@ -78,10 +78,10 @@ export const LibraryView: React.FC = () => {
       {/* Title & Actions */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">
+          <h1 className="font-serif text-[26px] font-medium tracking-tight text-white/95">
             Your Sanctuary
           </h1>
-          <p className="text-xs text-stone-400 mt-0.5">
+          <p className="text-xs text-stone-400 font-light mt-0.5 tracking-wide">
             Playlists, offline audio and saved rituals
           </p>
         </div>

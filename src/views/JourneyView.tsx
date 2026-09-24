@@ -56,7 +56,7 @@ export const JourneyView: React.FC = () => {
       <div
         key={program.id}
         onClick={() => openProgramDetail(program)}
-        className={`group relative rounded-[28px] overflow-hidden bg-[#0d1022] border border-white/10 hover:border-[#dfb76c]/40 transition-all duration-300 cursor-pointer shadow-xl active:scale-[0.98] ${
+        className={`group relative rounded-[28px] overflow-hidden specular-card hover:border-[#dfb76c]/40 transition-all duration-300 cursor-pointer shadow-xl active:scale-[0.985] ${
           isHero ? 'w-full' : 'flex-shrink-0 w-72'
         }`}
       >
@@ -71,13 +71,13 @@ export const JourneyView: React.FC = () => {
 
           {/* Top Badges */}
           <div className="absolute top-3 inset-x-3 flex items-center justify-between">
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-black/60 backdrop-blur-md text-[#dfb76c] border border-white/10 flex items-center space-x-1 font-mono">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-black/65 backdrop-blur-md text-[#dfb76c] border border-white/10 flex items-center space-x-1 font-mono">
               <Calendar className="w-3 h-3" />
               <span>{program.totalDays} Days</span>
             </span>
 
             {isPremium && (
-              <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-black/60 backdrop-blur-md text-[#dfb76c] border border-[#dfb76c]/30 flex items-center space-x-1">
+              <span className="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-black/65 backdrop-blur-md text-[#dfb76c] border border-[#dfb76c]/30 flex items-center space-x-1 font-mono">
                 <Crown className="w-2.5 h-2.5 fill-[#dfb76c]" />
                 <span>PREMIUM</span>
               </span>
@@ -97,7 +97,7 @@ export const JourneyView: React.FC = () => {
         {/* Card Body */}
         <div className="p-4 space-y-3">
           <div>
-            <h3 className="text-sm font-bold text-white leading-snug group-hover:text-[#f3cf7a] transition-colors line-clamp-1">
+            <h3 className="font-serif text-[15px] font-medium text-white leading-snug group-hover:text-[#f3cf7a] transition-colors line-clamp-1">
               {program.title}
             </h3>
             <p className="text-xs text-stone-300 mt-1 line-clamp-2 font-light leading-relaxed">
@@ -134,7 +134,7 @@ export const JourneyView: React.FC = () => {
               </span>
             </div>
 
-            <button 
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 openProgramDetail(program);
@@ -151,31 +151,34 @@ export const JourneyView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-7 pb-24 pt-3 px-4 max-w-md mx-auto animate-fade-in select-none">
+    <div className="space-y-7 pb-24 pt-3 px-4 max-w-md mx-auto animate-fade-in select-none relative">
+      {/* Subtle Ambient Glow Orb */}
+      <div className="absolute -top-10 inset-x-0 h-72 pointer-events-none bg-gradient-to-b from-[#18233e]/30 via-[#101429]/10 to-transparent blur-3xl -z-10" />
+
       {/* Page Header */}
       <div>
         <div className="flex items-center space-x-1.5 text-xs text-[#a599e0] font-medium tracking-wide">
           <Sparkles className="w-3.5 h-3.5 text-[#dfb76c]" />
           <span>Curated Transformational Paths</span>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-white mt-0.5">
+        <h1 className="font-serif text-[26px] font-medium tracking-tight text-white/95 mt-0.5">
           Your Wellness Journey
         </h1>
-        <p className="text-xs text-stone-400 font-light mt-0.5">
+        <p className="text-xs text-stone-400 font-light mt-0.5 tracking-wide">
           Small steps. Better days.
         </p>
       </div>
 
       {/* Subtle Streak Card */}
-      <div className="p-4 rounded-3xl bg-gradient-to-r from-[#171b38] via-[#12152e] to-[#0c0f21] border border-white/10 flex items-center justify-between shadow-xl">
+      <div className="p-4 rounded-3xl specular-card flex items-center justify-between shadow-xl">
         <div className="flex items-center space-x-3.5">
           <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#dfb76c]/20 to-[#a599e0]/20 border border-[#dfb76c]/30 flex items-center justify-center text-[#dfb76c] shadow-gold-glow">
             <Flame className="w-5 h-5 fill-current" />
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
-              <span className="text-sm font-bold text-white">{streakInfo.currentStreak} Day Streak</span>
-              <span className="text-[10px] text-[#dfb76c] bg-[#dfb76c]/15 px-2 py-0.2 rounded-full font-mono">
+              <span className="text-sm font-semibold text-white">{streakInfo.currentStreak} Day Streak</span>
+              <span className="text-[10px] text-[#dfb76c] bg-[#dfb76c]/15 px-2 py-0.5 rounded-full font-mono border border-[#dfb76c]/30">
                 Longest: {streakInfo.longestStreak} Days
               </span>
             </div>

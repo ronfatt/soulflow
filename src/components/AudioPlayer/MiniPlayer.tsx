@@ -17,12 +17,12 @@ export const MiniPlayer: React.FC = () => {
   return (
     <div 
       onClick={openPlayer}
-      className="group relative mx-3.5 mb-2 rounded-2xl bg-[#12162e]/90 backdrop-blur-2xl border border-white/10 shadow-2xl p-2.5 cursor-pointer transition-all duration-300 hover:bg-[#181d3d] active:scale-[0.99] z-40 select-none"
+      className="group relative mx-3.5 mb-2 rounded-2xl bg-[#0d1022]/90 backdrop-blur-3xl border border-white/[0.08] shadow-[0_16px_40px_-10px_rgba(0,0,0,0.85),_inset_0_1px_0_rgba(255,255,255,0.12)] p-2.5 cursor-pointer transition-all duration-300 hover:bg-[#131730]/95 active:scale-[0.99] z-40 select-none"
     >
       {/* Top micro progress bar */}
       <div className="absolute top-0 inset-x-3.5 h-[2px] bg-white/[0.08] rounded-full overflow-hidden">
         <div 
-          className="h-full bg-gradient-to-r from-[#a599e0] via-[#dfb76c] to-[#f3cf7a] transition-all duration-300"
+          className="h-full bg-gradient-to-r from-[#a599e0] via-[#dfb76c] to-[#f3cf7a] transition-all duration-300 shadow-[0_0_8px_rgba(223,183,108,0.6)]"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -73,7 +73,7 @@ export const MiniPlayer: React.FC = () => {
 
           <button
             onClick={openPlayer}
-            className="p-1.5 text-stone-400 hover:text-white transition-colors"
+            className="p-1.5 text-stone-400 hover:text-white transition-colors active:scale-90"
             aria-label="Expand player"
           >
             <ChevronUp className="w-4 h-4" />
@@ -84,7 +84,7 @@ export const MiniPlayer: React.FC = () => {
               e.stopPropagation();
               pause();
             }}
-            className="p-1 text-stone-500 hover:text-stone-300 transition-colors"
+            className="p-1 text-stone-500 hover:text-stone-300 transition-colors active:scale-90"
             aria-label="Close"
           >
             <X className="w-3 h-3" />

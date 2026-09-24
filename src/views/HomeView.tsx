@@ -141,7 +141,10 @@ export const HomeView: React.FC = () => {
   }, [tracks]);
 
   return (
-    <div className="space-y-7 pb-24 pt-3 px-4 max-w-md mx-auto animate-fade-in select-none">
+    <div className="space-y-7 pb-24 pt-3 px-4 max-w-md mx-auto animate-fade-in select-none relative">
+      {/* Subtle Ambient Glow Orb */}
+      <div className="absolute -top-10 inset-x-0 h-72 pointer-events-none bg-gradient-to-b from-[#241a3e]/30 via-[#18112c]/10 to-transparent blur-3xl -z-10" />
+
       {/* Top Greeting Header */}
       <div className="flex items-center justify-between pt-1">
         <div>
@@ -149,7 +152,7 @@ export const HomeView: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5 text-[#dfb76c]" />
             <span>{getGreeting()}, {user.name.split(' ')[0]}</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white mt-0.5">
+          <h1 className="font-serif text-[26px] font-medium tracking-tight text-white/95 mt-0.5">
             SoulFlow
           </h1>
         </div>
@@ -160,11 +163,11 @@ export const HomeView: React.FC = () => {
           className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all active:scale-95 ${
             user.membershipStatus === 'free'
               ? 'bg-[#dfb76c]/15 border-[#dfb76c]/40 text-[#dfb76c] hover:bg-[#dfb76c]/25 shadow-gold-glow'
-              : 'bg-white/10 border-white/20 text-white'
+              : 'bg-white/[0.08] border-white/[0.15] text-white hover:bg-white/[0.12]'
           }`}
         >
           <Crown className="w-3.5 h-3.5 fill-current" />
-          <span className="capitalize">{user.membershipStatus === 'free' ? 'Upgrade' : user.membershipStatus}</span>
+          <span className="capitalize font-mono text-[11px]">{user.membershipStatus === 'free' ? 'Upgrade' : user.membershipStatus}</span>
         </button>
       </div>
 
@@ -183,7 +186,7 @@ export const HomeView: React.FC = () => {
 
           <div 
             onClick={() => openDailySession(activeJourneyProgram, activeJourneyProg.current_day)}
-            className="group relative p-4 rounded-3xl bg-gradient-to-r from-[#171c3b] via-[#12162e] to-[#0d1020] border border-[#dfb76c]/30 hover:border-[#dfb76c]/60 transition-all cursor-pointer shadow-xl active:scale-[0.98]"
+            className="group relative p-4 rounded-3xl specular-card hover:border-[#dfb76c]/50 transition-all cursor-pointer shadow-xl active:scale-[0.985]"
           >
             <div className="flex items-center space-x-3.5">
               <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 shadow-lg border border-white/10">
@@ -208,7 +211,7 @@ export const HomeView: React.FC = () => {
                   </span>
                 </div>
 
-                <h3 className="text-sm font-bold text-white truncate mt-0.5">
+                <h3 className="font-serif text-sm font-medium text-white truncate mt-0.5">
                   {activeJourneyProgram.title}
                 </h3>
                 <p className="text-xs text-stone-400 truncate font-light">
@@ -250,7 +253,7 @@ export const HomeView: React.FC = () => {
 
           <div 
             onClick={() => playTrack(continueTrack, undefined, continueProgressSec)}
-            className="group relative p-3.5 rounded-3xl bg-gradient-to-r from-[#151933] via-[#12152b] to-[#0d0f21] border border-white/10 hover:border-[#dfb76c]/40 transition-all duration-300 cursor-pointer shadow-xl active:scale-[0.98]"
+            className="group relative p-3.5 rounded-3xl specular-card hover:border-[#dfb76c]/40 transition-all duration-300 cursor-pointer shadow-xl active:scale-[0.985]"
           >
             <div className="flex items-center space-x-3.5">
               <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 shadow-lg border border-white/5">
@@ -266,7 +269,7 @@ export const HomeView: React.FC = () => {
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-center space-x-1.5">
-                  <span className="text-[10px] text-[#dfb76c] font-semibold uppercase tracking-wider font-mono">
+                  <span className="text-[10px] text-[#dfb76c] font-medium uppercase tracking-wider font-mono">
                     {continueTrack.categoryLabel}
                   </span>
                   <span className="text-[10px] text-stone-500">•</span>
@@ -275,7 +278,7 @@ export const HomeView: React.FC = () => {
                   </span>
                 </div>
 
-                <h3 className="text-sm font-bold text-white truncate mt-0.5">
+                <h3 className="font-serif text-sm font-medium text-white truncate mt-0.5">
                   {continueTrack.title}
                 </h3>
                 <p className="text-xs text-stone-400 truncate font-light">
@@ -320,7 +323,7 @@ export const HomeView: React.FC = () => {
       </div>
 
       {/* SECTION C: BASED ON YOUR MOOD (Dynamic) */}
-      <div className="space-y-3 p-4 rounded-[30px] bg-gradient-to-b from-[#141830] via-[#101326] to-[#0a0c16] border border-white/10 shadow-xl">
+      <div className="space-y-3 p-4 rounded-[30px] specular-card shadow-xl">
         <SectionHeader 
           title="Based on Your Mood" 
           subtitle={`Curated specifically for your #${selectedMood} practice`}
@@ -354,7 +357,7 @@ export const HomeView: React.FC = () => {
             <div 
               key={prog.id}
               onClick={() => openProgramDetail(prog)}
-              className="relative overflow-hidden rounded-[28px] p-5 border border-white/10 bg-[#101429] cursor-pointer group shadow-xl hover:border-[#dfb76c]/40 transition-all active:scale-[0.98]"
+              className="relative overflow-hidden rounded-[28px] p-5 specular-card cursor-pointer group shadow-xl hover:border-[#dfb76c]/40 transition-all active:scale-[0.985]"
             >
               <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full bg-[#dfb76c]/10 blur-3xl group-hover:bg-[#dfb76c]/20 transition-all" />
 
@@ -364,7 +367,7 @@ export const HomeView: React.FC = () => {
                     <Calendar className="w-3.5 h-3.5" />
                     <span>{prog.totalDays} Days • {prog.difficulty}</span>
                   </div>
-                  <h3 className="text-base font-bold text-white leading-tight">
+                  <h3 className="font-serif text-[17px] font-medium text-white leading-tight">
                     {prog.title}
                   </h3>
                   <p className="text-xs text-stone-300 font-light line-clamp-1">
