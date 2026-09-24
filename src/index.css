@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    background-color: #05070e;
+    color: #f7f5f0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+  }
+}
+
+/* Luxury Serif for High-End Wellness Headlines */
+.font-display {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Glassmorphism & Cinematic Panels */
+.glass-panel {
+  background: rgba(14, 18, 34, 0.72);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-nav {
+  background: rgba(8, 10, 20, 0.88);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-pill {
+  background: rgba(22, 27, 49, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Cinematic Shadows & Glows */
+.gold-glow {
+  box-shadow: 0 8px 30px -4px rgba(212, 175, 55, 0.28);
+}
+
+.purple-glow {
+  box-shadow: 0 8px 30px -4px rgba(165, 153, 224, 0.25);
+}
+
+.soft-glow {
+  box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.75);
+}
+
+/* Breathing Animation for Mindful Audio */
+@keyframes mindful-breath {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 40px -10px rgba(212, 175, 55, 0.15);
+  }
+  50% {
+    transform: scale(1.035);
+    box-shadow: 0 0 65px -5px rgba(212, 175, 55, 0.38);
+  }
+}
+
+.animate-breath {
+  animation: mindful-breath 7s ease-in-out infinite;
+}
+
+/* Audio Waveform Equalizer */
+@keyframes eq-wave {
+  0%, 100% { height: 4px; }
+  50% { height: 18px; }
+}
+
+.eq-1 { animation: eq-wave 0.9s ease-in-out infinite 0.1s; }
+.eq-2 { animation: eq-wave 1.3s ease-in-out infinite 0.3s; }
+.eq-3 { animation: eq-wave 0.8s ease-in-out infinite 0.2s; }
+.eq-4 { animation: eq-wave 1.1s ease-in-out infinite 0.4s; }
+
+/* Hide Scrollbars Cleanly */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Apple-style Custom Slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 14px;
+  width: 14px;
+  border-radius: 9999px;
+  background: #f5f0eb;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  margin-top: -5px;
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.3);
+  background: #d4af37;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  border-radius: 9999px;
+}
