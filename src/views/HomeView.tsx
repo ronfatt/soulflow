@@ -34,17 +34,19 @@ export const HomeView: React.FC = () => {
     userProgramProgress,
     followingMentors,
     setShowMembershipModal,
-    setActiveTab
+    setActiveTab,
+    t,
+    language
   } = useApp();
 
   const { playTrack, recentlyPlayed } = useAudio();
 
-  // Greeting
+  // Dynamic Poetic Greeting
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return 'Good Morning';
-    if (hour < 18) return 'Good Afternoon';
-    return 'Good Evening';
+    if (hour < 12) return t('greetingMorning');
+    if (hour < 18) return t('greetingAfternoon');
+    return t('greetingEvening');
   };
 
   // Continue Your Journey (Program Progress)
@@ -81,53 +83,54 @@ export const HomeView: React.FC = () => {
 
   // Section C: Based on Your Mood (Dynamically curated per user selection)
   const moodCurations = useMemo(() => {
+    const isZh = language === 'zh';
     switch (selectedMood) {
       case 'sleep':
         return [
-          { label: 'Deep Sleep Music', track: tracks.find(t => t.title === 'Deep Sleep Frequency') || tracks[0] },
-          { label: 'Rain Soundscape', track: tracks.find(t => t.title.includes('Midnight Rain')) || tracks[7] },
-          { label: 'Night Meditation', track: tracks.find(t => t.title === 'Moonlight Meditation') || tracks[1] },
-          { label: 'Sleep Journey', track: tracks.find(t => t.title.includes('Deep Sleep 432Hz')) || tracks[0] },
+          { label: isZh ? '深度助眠脑波' : 'Deep Sleep Music', track: tracks.find(t => t.title === 'Deep Sleep Frequency') || tracks[0] },
+          { label: isZh ? '午夜柔雨声景' : 'Rain Soundscape', track: tracks.find(t => t.title.includes('Midnight Rain')) || tracks[7] },
+          { label: isZh ? '月夜止念冥想' : 'Night Meditation', track: tracks.find(t => t.title === 'Moonlight Meditation') || tracks[1] },
+          { label: isZh ? '432Hz 沉浸入梦' : 'Sleep Journey', track: tracks.find(t => t.title.includes('Deep Sleep 432Hz')) || tracks[0] },
         ];
       case 'stress':
         return [
-          { label: 'Anxiety Release', track: tracks.find(t => t.title === 'Release Anxiety') || tracks[1] },
-          { label: 'Calm Piano', track: tracks.find(t => t.title === 'Healing Piano') || tracks[5] },
-          { label: 'Breathing Meditation', track: tracks.find(t => t.title.includes('Anxiety Release & Vagus')) || tracks[1] },
-          { label: 'Ocean Soundscape', track: tracks.find(t => t.title === 'Ocean Mind') || tracks[2] },
+          { label: isZh ? '焦虑释放与重置' : 'Anxiety Release', track: tracks.find(t => t.title === 'Release Anxiety') || tracks[1] },
+          { label: isZh ? '空灵疗愈钢琴' : 'Calm Piano', track: tracks.find(t => t.title === 'Healing Piano') || tracks[5] },
+          { label: isZh ? '迷走神经平息呼吸' : 'Breathing Meditation', track: tracks.find(t => t.title.includes('Anxiety Release & Vagus')) || tracks[1] },
+          { label: isZh ? '潮汐正念音疗' : 'Ocean Soundscape', track: tracks.find(t => t.title === 'Ocean Mind') || tracks[2] },
         ];
       case 'focus':
         return [
-          { label: 'Morning Clarity', track: tracks.find(t => t.title === 'Morning Clarity') || tracks[3] },
-          { label: 'Alpha Entrainment', track: tracks.find(t => t.title.includes('Alpha Clarity')) || tracks[5] },
-          { label: 'Focus Resonance', track: tracks.find(t => t.title.includes('Morning Energy')) || tracks[3] },
-          { label: 'Deep Flow Piano', track: tracks.find(t => t.title === 'Healing Piano') || tracks[6] },
+          { label: isZh ? '晨间清透心流' : 'Morning Clarity', track: tracks.find(t => t.title === 'Morning Clarity') || tracks[3] },
+          { label: isZh ? 'Alpha 脑波深潜' : 'Alpha Entrainment', track: tracks.find(t => t.title.includes('Alpha Clarity')) || tracks[5] },
+          { label: isZh ? '清醒共振频率' : 'Focus Resonance', track: tracks.find(t => t.title.includes('Morning Energy')) || tracks[3] },
+          { label: isZh ? '深度工作钢琴' : 'Deep Flow Piano', track: tracks.find(t => t.title === 'Healing Piano') || tracks[6] },
         ];
       case 'meditation':
         return [
-          { label: 'Inner Stillness', track: tracks.find(t => t.title === 'Inner Stillness') || tracks[8] },
-          { label: 'Non-Dual Presence', track: tracks.find(t => t.title.includes('Stillness Within')) || tracks[8] },
-          { label: 'Forest Grounding', track: tracks.find(t => t.title === 'Forest Breath') || tracks[4] },
-          { label: 'Heart Resonance', track: tracks.find(t => t.title.includes('Heart Chakra')) || tracks[6] },
+          { label: isZh ? '内在沉静定心' : 'Inner Stillness', track: tracks.find(t => t.title === 'Inner Stillness') || tracks[8] },
+          { label: isZh ? '无执空灵觉知' : 'Non-Dual Presence', track: tracks.find(t => t.title.includes('Stillness Within')) || tracks[8] },
+          { label: isZh ? '森林大地扎根' : 'Forest Grounding', track: tracks.find(t => t.title === 'Forest Breath') || tracks[4] },
+          { label: isZh ? '慈悲心轮共振' : 'Heart Resonance', track: tracks.find(t => t.title.includes('Heart Chakra')) || tracks[6] },
         ];
       case 'relax':
         return [
-          { label: 'Ocean Mind', track: tracks.find(t => t.title === 'Ocean Mind') || tracks[2] },
-          { label: 'Healing Piano', track: tracks.find(t => t.title === 'Healing Piano') || tracks[6] },
-          { label: 'Coastal Twilight', track: tracks.find(t => t.title.includes('Ocean Healing')) || tracks[2] },
-          { label: 'Forest Breath', track: tracks.find(t => t.title === 'Forest Breath') || tracks[4] },
+          { label: isZh ? '澄澈海浪音疗' : 'Ocean Mind', track: tracks.find(t => t.title === 'Ocean Mind') || tracks[2] },
+          { label: isZh ? '温润治愈琴韵' : 'Healing Piano', track: tracks.find(t => t.title === 'Healing Piano') || tracks[6] },
+          { label: isZh ? '暮色海岸沉思' : 'Coastal Twilight', track: tracks.find(t => t.title.includes('Ocean Healing')) || tracks[2] },
+          { label: isZh ? '松针清风吐纳' : 'Forest Breath', track: tracks.find(t => t.title === 'Forest Breath') || tracks[4] },
         ];
       case 'spiritual':
         return [
-          { label: 'Sacred Solfeggio', track: tracks.find(t => t.title.includes('528Hz Miracle')) || tracks[4] },
-          { label: 'Inner Stillness', track: tracks.find(t => t.title === 'Inner Stillness') || tracks[8] },
-          { label: 'Heart Chakra Bath', track: tracks.find(t => t.title.includes('Heart Chakra')) || tracks[6] },
-          { label: 'Zen Presence', track: tracks.find(t => t.title.includes('Stillness Within')) || tracks[8] },
+          { label: isZh ? '索菲吉奥神圣频波' : 'Sacred Solfeggio', track: tracks.find(t => t.title.includes('528Hz Miracle')) || tracks[4] },
+          { label: isZh ? '超然灵性定境' : 'Inner Stillness', track: tracks.find(t => t.title === 'Inner Stillness') || tracks[8] },
+          { label: isZh ? '432Hz 能量声波浴' : 'Heart Chakra Bath', track: tracks.find(t => t.title.includes('Heart Chakra')) || tracks[6] },
+          { label: isZh ? '禅修合一当下' : 'Zen Presence', track: tracks.find(t => t.title.includes('Stillness Within')) || tracks[8] },
         ];
       default:
         return tracks.slice(0, 4).map(t => ({ label: t.categoryLabel, track: t }));
     }
-  }, [selectedMood, tracks]);
+  }, [selectedMood, tracks, language]);
 
   // Section D: Featured Programs
   const featuredPrograms = programs.slice(0, 2);
@@ -178,9 +181,9 @@ export const HomeView: React.FC = () => {
       {activeJourneyProgram && activeJourneyProg && (
         <div className="space-y-2.5">
           <SectionHeader 
-            title="Continue Your Journey" 
-            subtitle="Resume your structured transformational practice"
-            actionText="All Journeys"
+            title={t('continueJourney')} 
+            subtitle={t('continueJourneySub')}
+            actionText={t('allJourneys')}
             onAction={() => setActiveTab('journey')}
           />
 
@@ -203,11 +206,11 @@ export const HomeView: React.FC = () => {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center space-x-2">
                   <span className="text-[10px] text-[#dfb76c] font-bold uppercase tracking-wider font-mono">
-                    Day {activeJourneyProg.current_day} of {activeJourneyProgram.totalDays}
+                    {t('dayOf', { current: activeJourneyProg.current_day, total: activeJourneyProgram.totalDays })}
                   </span>
                   <span className="text-[10px] text-stone-500">•</span>
                   <span className="text-[10px] text-stone-300 font-mono">
-                    {activeJourneyProg.progress_percentage}% Complete
+                    {t('percentComplete', { percent: activeJourneyProg.progress_percentage })}
                   </span>
                 </div>
 
@@ -215,7 +218,7 @@ export const HomeView: React.FC = () => {
                   {activeJourneyProgram.title}
                 </h3>
                 <p className="text-xs text-stone-400 truncate font-light">
-                  Guided by {activeJourneyProgram.mentorName}
+                  {t('guidedBy', { name: activeJourneyProgram.mentorName })}
                 </p>
 
                 {/* Progress bar preview */}
@@ -246,9 +249,9 @@ export const HomeView: React.FC = () => {
       {continueTrack && (
         <div className="space-y-2.5">
           <SectionHeader 
-            title="Continue Listening" 
-            subtitle="Resume from previous progress"
-            badge="Resume"
+            title={t('continueListening')} 
+            subtitle={t('continueListeningSub')}
+            badge={t('resumeBadge')}
           />
 
           <div 
@@ -306,9 +309,9 @@ export const HomeView: React.FC = () => {
       {/* SECTION B: RECOMMENDED FOR YOU */}
       <div className="space-y-3">
         <SectionHeader 
-          title="Recommended For You" 
-          subtitle="Acoustic resonance matching your mind, body and goals"
-          actionText="See All"
+          title={t('recommendedForYou')} 
+          subtitle={t('recommendedSub')}
+          actionText={t('seeAll')}
           onAction={() => setActiveTab('explore')}
         />
 
@@ -325,8 +328,8 @@ export const HomeView: React.FC = () => {
       {/* SECTION C: BASED ON YOUR MOOD (Dynamic) */}
       <div className="space-y-3 p-4 rounded-[30px] specular-card shadow-xl">
         <SectionHeader 
-          title="Based on Your Mood" 
-          subtitle={`Curated specifically for your #${selectedMood} practice`}
+          title={t('basedOnMood')} 
+          subtitle={t('basedOnMoodSub', { mood: selectedMood })}
           badge={`#${selectedMood}`}
         />
 
@@ -346,9 +349,9 @@ export const HomeView: React.FC = () => {
       {/* SECTION D: FEATURED PROGRAMS */}
       <div className="space-y-3">
         <SectionHeader 
-          title="Featured Programs" 
-          subtitle="Multi-day transformational journeys guided by master teachers"
-          actionText="All Journeys"
+          title={t('featuredPrograms')} 
+          subtitle={t('featuredProgramsSub')}
+          actionText={t('allJourneys')}
           onAction={() => setActiveTab('journey')}
         />
 
@@ -365,13 +368,13 @@ export const HomeView: React.FC = () => {
                 <div className="space-y-1 max-w-[75%]">
                   <div className="flex items-center space-x-1.5 text-[10px] font-bold text-[#dfb76c] uppercase tracking-wider font-mono">
                     <Calendar className="w-3.5 h-3.5" />
-                    <span>{prog.totalDays} Days • {prog.difficulty}</span>
+                    <span>{t('daysCount', { days: prog.totalDays })} • {prog.difficulty}</span>
                   </div>
                   <h3 className="font-serif text-[17px] font-medium text-white leading-tight">
                     {prog.title}
                   </h3>
                   <p className="text-xs text-stone-300 font-light line-clamp-1">
-                    Guided by {prog.mentorName}
+                    {t('guidedBy', { name: prog.mentorName })}
                   </p>
                 </div>
 
@@ -388,8 +391,8 @@ export const HomeView: React.FC = () => {
       {followedTracks.length > 0 && (
         <div className="space-y-3">
           <SectionHeader 
-            title="From Mentors You Follow" 
-            subtitle="Fresh practices and sacred audio from your guides"
+            title={t('fromMentorsYouFollow')} 
+            subtitle={t('fromMentorsYouFollowSub')}
             icon={Sparkles}
           />
           <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
@@ -406,9 +409,9 @@ export const HomeView: React.FC = () => {
       {featuredMentor && (
         <div className="space-y-3">
           <SectionHeader 
-            title="Featured Mentor" 
-            subtitle="Deep dive with world-class circadian and sound pioneers"
-            actionText="View Profile"
+            title={t('featuredMentor')} 
+            subtitle={t('featuredMentorSub')}
+            actionText={t('viewProfile')}
             onAction={() => openMentorDetail(featuredMentor)}
           />
           <MentorCard 
@@ -422,9 +425,9 @@ export const HomeView: React.FC = () => {
       {/* SECTION E: ALL MENTORS SHORTCUT */}
       <div className="space-y-3">
         <SectionHeader 
-          title="Explore Mentors" 
-          subtitle="World-class neuroscientists, sound alchemists and somatic masters"
-          actionText="View All"
+          title={t('exploreMentors')} 
+          subtitle={t('exploreMentorsSub')}
+          actionText={t('seeAll')}
           onAction={() => setActiveTab('explore')}
         />
 
@@ -444,9 +447,9 @@ export const HomeView: React.FC = () => {
       {/* SECTION F: NEW THIS WEEK */}
       <div className="space-y-3">
         <SectionHeader 
-          title="New This Week" 
-          subtitle="Fresh acoustic frequencies and restorative soundscapes"
-          actionText="Explore"
+          title={t('newThisWeek')} 
+          subtitle={t('newThisWeekSub')}
+          actionText={t('seeAll')}
           onAction={() => setActiveTab('explore')}
         />
 

@@ -24,7 +24,8 @@ export const JourneyView: React.FC = () => {
     openProgramDetail, 
     openDailySession,
     userProgramProgress, 
-    streakInfo 
+    streakInfo,
+    t 
   } = useApp();
 
   // Find the active program (e.g. 14-Day Stress Reset or highest progress)
@@ -73,13 +74,13 @@ export const JourneyView: React.FC = () => {
           <div className="absolute top-3 inset-x-3 flex items-center justify-between">
             <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-black/65 backdrop-blur-md text-[#dfb76c] border border-white/10 flex items-center space-x-1 font-mono">
               <Calendar className="w-3 h-3" />
-              <span>{program.totalDays} Days</span>
+              <span>{t('daysCount', { days: program.totalDays })}</span>
             </span>
 
             {isPremium && (
               <span className="px-2.5 py-0.5 rounded-full text-[9px] font-medium bg-black/65 backdrop-blur-md text-[#dfb76c] border border-[#dfb76c]/30 flex items-center space-x-1 font-mono">
                 <Crown className="w-2.5 h-2.5 fill-[#dfb76c]" />
-                <span>PREMIUM</span>
+                <span>{t('premiumBadge')}</span>
               </span>
             )}
           </div>
@@ -89,7 +90,7 @@ export const JourneyView: React.FC = () => {
             <span>{program.difficulty}</span>
             <span className="flex items-center space-x-1 text-[#dfb76c]">
               <Clock className="w-3 h-3" />
-              <span>{program.totalDurationFormatted || `${program.totalDays * 20}m total`}</span>
+              <span>{program.totalDurationFormatted || `${program.totalDays * 20}m`}</span>
             </span>
           </div>
         </div>
@@ -109,9 +110,9 @@ export const JourneyView: React.FC = () => {
           <div className="space-y-1">
             <div className="flex items-center justify-between text-[11px] font-mono">
               <span className="text-stone-400">
-                {hasStarted ? `Day ${currentDay} of ${program.totalDays}` : 'Not Started'}
+                {hasStarted ? t('dayOf', { current: currentDay, total: program.totalDays }) : t('notStarted')}
               </span>
-              <span className="text-[#dfb76c] font-semibold">{progressPct}%</span>
+              <span className="text-[#dfb76c] font-semibold">{t('percentComplete', { percent: progressPct })}</span>
             </div>
             <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
               <div 
@@ -141,7 +142,7 @@ export const JourneyView: React.FC = () => {
               }}
               className="text-xs font-semibold text-[#dfb76c] hover:text-[#f3cf7a] flex items-center space-x-0.5 flex-shrink-0"
             >
-              <span>{hasStarted ? 'Continue' : 'Explore'}</span>
+              <span>{hasStarted ? t('continueAction') : t('exploreAction')}</span>
               <ArrowRight className="w-3 h-3" />
             </button>
           </div>
@@ -159,13 +160,13 @@ export const JourneyView: React.FC = () => {
       <div>
         <div className="flex items-center space-x-1.5 text-xs text-[#a599e0] font-medium tracking-wide">
           <Sparkles className="w-3.5 h-3.5 text-[#dfb76c]" />
-          <span>Curated Transformational Paths</span>
+          <span>{t('curatedPaths')}</span>
         </div>
         <h1 className="font-serif text-[26px] font-medium tracking-tight text-white/95 mt-0.5">
-          Your Wellness Journey
+          {t('journeyTitle')}
         </h1>
         <p className="text-xs text-stone-400 font-light mt-0.5 tracking-wide">
-          Small steps. Better days.
+          {t('journeySub')}
         </p>
       </div>
 
@@ -177,13 +178,13 @@ export const JourneyView: React.FC = () => {
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
-              <span className="text-sm font-semibold text-white">{streakInfo.currentStreak} Day Streak</span>
+              <span className="text-sm font-semibold text-white">{t('streakTitle', { days: streakInfo.currentStreak })}</span>
               <span className="text-[10px] text-[#dfb76c] bg-[#dfb76c]/15 px-2 py-0.5 rounded-full font-mono border border-[#dfb76c]/30">
-                Longest: {streakInfo.longestStreak} Days
+                {t('streakLongest', { days: streakInfo.longestStreak })}
               </span>
             </div>
             <p className="text-[11px] text-stone-400 font-light mt-0.5">
-              Consistent daily regulation rewires baseline calm
+              {t('streakSub')}
             </p>
           </div>
         </div>
@@ -193,8 +194,8 @@ export const JourneyView: React.FC = () => {
       {activeProgram && (
         <div className="space-y-3">
           <SectionHeader 
-            title="Continue Your Journey" 
-            subtitle="Resume where you stopped today"
+            title={t('continueJourney')} 
+            subtitle={t('continueJourneySub')}
             icon={Flame}
           />
 
@@ -219,11 +220,11 @@ export const JourneyView: React.FC = () => {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center space-x-2">
                   <span className="text-[10px] text-[#dfb76c] font-bold uppercase tracking-wider font-mono">
-                    Day {activeProgress.current_day} of {activeProgram.totalDays}
+                    {t('dayOf', { current: activeProgress.current_day, total: activeProgram.totalDays })}
                   </span>
                   <span className="text-[10px] text-stone-500">•</span>
                   <span className="text-[10px] text-stone-400 font-mono">
-                    {activeProgress.progress_percentage}% Complete
+                    {t('percentComplete', { percent: activeProgress.progress_percentage })}
                   </span>
                 </div>
 
@@ -231,7 +232,7 @@ export const JourneyView: React.FC = () => {
                   {activeProgram.title}
                 </h3>
                 <p className="text-xs text-stone-300 truncate font-light">
-                  Guided by {activeProgram.mentorName}
+                  {t('guidedBy', { name: activeProgram.mentorName })}
                 </p>
 
                 {/* Progress bar line */}
@@ -242,7 +243,7 @@ export const JourneyView: React.FC = () => {
                       style={{ width: `${activeProgress.progress_percentage}%` }}
                     />
                   </div>
-                  <span className="text-[10px] text-[#dfb76c] font-semibold">Resume</span>
+                  <span className="text-[10px] text-[#dfb76c] font-semibold">{t('resumeBadge')}</span>
                 </div>
               </div>
             </div>
@@ -253,8 +254,8 @@ export const JourneyView: React.FC = () => {
       {/* SECTION B: RECOMMENDED FOR YOU */}
       <div className="space-y-3">
         <SectionHeader 
-          title="Recommended For You" 
-          subtitle="Based on your restorative goals and current streak"
+          title={t('recommendedForYou')} 
+          subtitle={t('recommendedSub')}
           icon={Sparkles}
         />
         <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
@@ -265,8 +266,8 @@ export const JourneyView: React.FC = () => {
       {/* SECTION C: SLEEP PROGRAMS */}
       <div className="space-y-3">
         <SectionHeader 
-          title="Sleep Programs" 
-          subtitle="Delta entrainment protocols for restorative nocturnal sleep"
+          title={t('sleepPrograms')} 
+          subtitle={t('sleepProgramsSub')}
           icon={Moon}
         />
         <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
@@ -277,8 +278,8 @@ export const JourneyView: React.FC = () => {
       {/* SECTION D: STRESS RELIEF PROGRAMS */}
       <div className="space-y-3">
         <SectionHeader 
-          title="Stress Relief Programs" 
-          subtitle="Polyvagal regulation, somatic sighs & nervous system grounding"
+          title={t('stressPrograms')} 
+          subtitle={t('stressProgramsSub')}
           icon={Wind}
         />
         <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
@@ -289,8 +290,8 @@ export const JourneyView: React.FC = () => {
       {/* SECTION E: EMOTIONAL HEALING */}
       <div className="space-y-3">
         <SectionHeader 
-          title="Emotional Healing" 
-          subtitle="Heart space opening, forgiveness & deep self-compassion"
+          title={t('emotionalPrograms')} 
+          subtitle={t('emotionalProgramsSub')}
           icon={Heart}
         />
         <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
@@ -301,8 +302,8 @@ export const JourneyView: React.FC = () => {
       {/* SECTION F: FOCUS & PRODUCTIVITY */}
       <div className="space-y-3">
         <SectionHeader 
-          title="Focus & Productivity" 
-          subtitle="10Hz alpha entrainment and clear cognitive stamina"
+          title={t('focusPrograms')} 
+          subtitle={t('focusProgramsSub')}
           icon={Compass}
         />
         <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
@@ -313,8 +314,8 @@ export const JourneyView: React.FC = () => {
       {/* SECTION G: SPIRITUAL GROWTH */}
       <div className="space-y-3">
         <SectionHeader 
-          title="Spiritual Growth" 
-          subtitle="Sacred Solfeggio, non-dual presence & transcendent awareness"
+          title={t('spiritualPrograms')} 
+          subtitle={t('spiritualProgramsSub')}
           icon={Sun}
         />
         <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">

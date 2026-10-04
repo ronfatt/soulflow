@@ -24,6 +24,7 @@ import {
   CommissionType,
   BillingCycle
 } from '../types';
+import { Language, TRANSLATIONS } from '../i18n/translations';
 import { 
   TRACKS, 
   MENTORS, 
@@ -127,6 +128,10 @@ interface AppContextType {
   setIsAdminView: (show: boolean) => void;
   setIsMobileFrame: (isMobile: boolean) => void;
   showToast: (msg: string) => void;
+  // Language & i18n
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: keyof typeof TRANSLATIONS['zh'], params?: Record<string, string | number>) => string;
   // Admin actions
   addTrack: (track: Omit<Track, 'id' | 'plays' | 'likes'>) => void;
   updateTrack: (id: string, updates: Partial<Track>) => void;
@@ -138,6 +143,27 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Language: Default to Chinese ('zh') as requested
+  const [language, setLanguageState] = useState<Language>(() => {
+    return (localStorage.getItem('soulflow_lang') as Language) || 'zh';
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('soulflow_lang', lang);
+  };
+
+  const t = (key: keyof typeof TRANSLATIONS['zh'], params?: Record<string, string | number>): string => {
+    const dict = TRANSLATIONS[language] || TRANSLATIONS.zh;
+    let text = (dict as any)[key] || TRANSLATIONS.zh[key] || String(key);
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v));
+      });
+    }
+    return text;
+  };
+
   const [activeTab, setActiveTab] = useState<MainTab>('home');
   const [selectedMood, setSelectedMood] = useState<ContentMood>('sleep');
   
@@ -905,6 +931,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setIsAdminView,
         setIsMobileFrame,
         showToast,
+        language,
+        setLanguage,
+        t,
         addTrack,
         updateTrack,
         deleteTrack,

@@ -27,7 +27,8 @@ export const LibraryView: React.FC = () => {
     createPlaylist, 
     openProgramDetail,
     setShowMembershipModal,
-    user 
+    user,
+    t 
   } = useApp();
 
   const { playTrack, recentlyPlayed } = useAudio();
@@ -43,19 +44,19 @@ export const LibraryView: React.FC = () => {
   };
 
   const formatPlayedAt = (isoString?: string) => {
-    if (!isoString) return 'Recently';
+    if (!isoString) return '刚刚';
     try {
       const date = new Date(isoString);
       const now = new Date();
       const diffMs = now.getTime() - date.getTime();
       const diffMins = Math.floor(diffMs / 60000);
-      if (diffMins < 1) return 'Just now';
-      if (diffMins < 60) return `${diffMins}m ago`;
+      if (diffMins < 1) return '刚刚';
+      if (diffMins < 60) return `${diffMins} 分钟前`;
       const diffHours = Math.floor(diffMins / 60);
-      if (diffHours < 24) return `${diffHours}h ago`;
+      if (diffHours < 24) return `${diffHours} 小时前`;
       return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
     } catch {
-      return 'Recently';
+      return '最近';
     }
   };
 
@@ -79,17 +80,17 @@ export const LibraryView: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-serif text-[26px] font-medium tracking-tight text-white/95">
-            Your Sanctuary
+            {t('libraryTitle')}
           </h1>
           <p className="text-xs text-stone-400 font-light mt-0.5 tracking-wide">
-            Playlists, offline audio and saved rituals
+            {t('librarySub')}
           </p>
         </div>
 
         <button
           onClick={() => setShowNewPlaylistModal(true)}
           className="p-2 rounded-2xl bg-[#dfb76c] text-[#0a0c16] hover:bg-[#f3cf7a] transition-all flex items-center space-x-1 shadow-gold-glow"
-          title="Create Playlist"
+          title={t('createPlaylist')}
         >
           <Plus className="w-4 h-4" />
         </button>
@@ -98,11 +99,11 @@ export const LibraryView: React.FC = () => {
       {/* Segmented Section Tabs */}
       <div className="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1">
         {[
-          { key: 'favorites', label: 'Favorites', count: favoriteTracks.length, icon: Heart },
-          { key: 'playlists', label: 'Playlists', count: playlists.length, icon: ListMusic },
-          { key: 'downloads', label: 'Downloads', count: downloadTracks.length, icon: Download },
-          { key: 'history', label: 'Recently Played', count: recentCount, icon: History },
-          { key: 'saved_programs', label: 'Programs', count: programs.length, icon: Bookmark },
+          { key: 'favorites', label: t('tabFavorites'), count: favoriteTracks.length, icon: Heart },
+          { key: 'playlists', label: t('tabPlaylists'), count: playlists.length, icon: ListMusic },
+          { key: 'downloads', label: t('tabDownloads'), count: downloadTracks.length, icon: Download },
+          { key: 'history', label: t('tabHistory'), count: recentCount, icon: History },
+          { key: 'saved_programs', label: t('tabSavedPrograms'), count: programs.length, icon: Bookmark },
         ].map(item => {
           const Icon = item.icon;
           const isActive = activeSection === item.key;
@@ -138,8 +139,7 @@ export const LibraryView: React.FC = () => {
           ) : (
             <div className="text-center py-16 px-4 rounded-3xl bg-[#121528] border border-white/5 space-y-2">
               <Heart className="w-8 h-8 text-stone-600 mx-auto" />
-              <p className="text-sm font-semibold text-white">No favorites yet</p>
-              <p className="text-xs text-stone-400">Tap the heart on any track to save it to your sacred sanctuary.</p>
+              <p className="text-sm font-semibold text-white">{t('noFavorites')}</p>
             </div>
           )}
         </div>
@@ -184,15 +184,15 @@ export const LibraryView: React.FC = () => {
           {user.membershipStatus === 'free' ? (
             <div className="text-center py-12 px-6 rounded-3xl bg-gradient-to-b from-[#181c35] to-[#121528] border border-[#dfb76c]/30 space-y-3">
               <Download className="w-9 h-9 text-[#dfb76c] mx-auto" />
-              <h3 className="text-base font-bold text-white">Offline Downloads</h3>
+              <h3 className="text-base font-bold text-white">{t('offlineNoticeTitle')}</h3>
               <p className="text-xs text-stone-300 leading-relaxed max-w-xs mx-auto">
-                Download sound baths and meditations to play anywhere in nature or airplane mode without Wi-Fi.
+                {t('offlineNoticeSub')}
               </p>
               <button
                 onClick={() => setShowMembershipModal(true)}
                 className="py-2.5 px-5 rounded-xl bg-gradient-to-r from-[#dfb76c] to-[#f3cf7a] text-[#0a0c16] font-bold text-xs shadow-gold-glow"
               >
-                Upgrade to Premium
+                {t('upgradeNow')}
               </button>
             </div>
           ) : downloadTracks.length > 0 ? (
@@ -204,8 +204,7 @@ export const LibraryView: React.FC = () => {
           ) : (
             <div className="text-center py-16 px-4 rounded-3xl bg-[#121528] border border-white/5 space-y-2">
               <Download className="w-8 h-8 text-stone-600 mx-auto" />
-              <p className="text-sm font-semibold text-white">No downloaded tracks</p>
-              <p className="text-xs text-stone-400">Tap the download icon inside the player to save tracks offline.</p>
+              <p className="text-sm font-semibold text-white">{t('noDownloads')}</p>
             </div>
           )}
         </div>
@@ -323,19 +322,19 @@ export const LibraryView: React.FC = () => {
           >
             <h3 className="text-base font-bold text-white flex items-center space-x-2">
               <FolderPlus className="w-5 h-5 text-[#dfb76c]" />
-              <span>Create Custom Playlist</span>
+              <span>{t('createPlaylistPrompt')}</span>
             </h3>
 
             <form onSubmit={handleCreatePlaylist} className="space-y-3">
               <div>
-                <label className="text-xs text-stone-400 block mb-1">Playlist Name</label>
+                <label className="text-xs text-stone-400 block mb-1">{t('tabPlaylists')}</label>
                 <input
                   type="text"
                   required
                   autoFocus
                   value={newPlaylistTitle}
                   onChange={(e) => setNewPlaylistTitle(e.target.value)}
-                  placeholder="e.g. Moonlit Tibetan Bowls"
+                  placeholder={t('playlistNamePlaceholder')}
                   className="w-full px-3 py-2 bg-black/40 border border-white/10 rounded-xl text-xs text-white placeholder-stone-500 focus:outline-none focus:border-[#dfb76c]"
                 />
               </div>
@@ -346,13 +345,13 @@ export const LibraryView: React.FC = () => {
                   onClick={() => setShowNewPlaylistModal(false)}
                   className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 text-xs font-medium"
                 >
-                  Cancel
+                  {t('cancel')}
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#dfb76c] to-[#f3cf7a] text-[#0a0c16] text-xs font-bold"
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#dfb76c] to-[#f3cf7a] text-[#0a0c16] text-xs font-bold shadow-gold-glow"
                 >
-                  Create
+                  {t('confirmCreate')}
                 </button>
               </div>
             </form>

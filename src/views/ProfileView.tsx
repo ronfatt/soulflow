@@ -35,11 +35,15 @@ export const ProfileView: React.FC = () => {
     mentors,
     followingMentors,
     streakInfo,
-    openMentorDetail
+    openMentorDetail,
+    language,
+    setLanguage,
+    t
   } = useApp();
 
   const [copiedReferral, setCopiedReferral] = useState(false);
   const [showReferralModal, setShowReferralModal] = useState(false);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
 
   const followedMentorsList = mentors.filter(m => followingMentors.includes(m.id));
   const referringMentor = mentors.find(m => m.referralCode === user.referredByCode);
@@ -47,47 +51,105 @@ export const ProfileView: React.FC = () => {
   const handleCopyCode = () => {
     navigator.clipboard.writeText('SOUL-ALICIA2026');
     setCopiedReferral(true);
-    showToast('Your referral code copied!');
+    showToast(t('codeCopied'));
     setTimeout(() => setCopiedReferral(false), 3000);
   };
 
   const handleLogout = () => {
     setShowAuthModal(true);
-    showToast('Logged out of session');
+    showToast(language === 'zh' ? '已安全退出登录' : 'Logged out of session');
+  };
+
+  const handleSwitchLanguage = (lang: 'zh' | 'en') => {
+    setLanguage(lang);
+    setShowLanguageModal(false);
+    showToast(lang === 'zh' ? '已切换至 简体中文（默认）' : 'Language switched to English (US)');
   };
 
   const menuSections = [
     {
-      title: 'Sacred Practice',
+      title: t('profilePractice'),
       items: [
-        { label: 'My Subscription', icon: Crown, value: user.membershipStatus.toUpperCase(), action: () => setShowMembershipModal(true), highlight: true },
-        { label: 'My Journey', icon: MapPin, value: `${streakInfo.currentStreak} Day Streak`, action: () => setActiveTab('journey') },
-        { label: 'Following Mentors', icon: Users, value: `${followedMentorsList.length} Guides`, action: () => setActiveTab('explore') },
-        { label: 'Favorite Content', icon: Heart, action: () => setActiveTab('library') },
-        { label: 'Downloads', icon: Download, action: () => setActiveTab('library') },
+        { 
+          label: language === 'zh' ? '我的会员订阅' : 'My Subscription', 
+          icon: Crown, 
+          value: user.membershipStatus === 'free' ? t('planFree') : (user.membershipStatus === 'premium' ? t('planPremium') : t('planPremiumPlus')), 
+          action: () => setShowMembershipModal(true), 
+          highlight: true 
+        },
+        { 
+          label: language === 'zh' ? '我的蜕变旅程' : 'My Journey', 
+          icon: MapPin, 
+          value: `${streakInfo.currentStreak} ${t('days')}`, 
+          action: () => setActiveTab('journey') 
+        },
+        { 
+          label: language === 'zh' ? '已关注导师' : 'Following Mentors', 
+          icon: Users, 
+          value: t('followingCount', { count: followedMentorsList.length }), 
+          action: () => setActiveTab('explore') 
+        },
+        { 
+          label: language === 'zh' ? '圣殿收藏' : 'Favorite Content', 
+          icon: Heart, 
+          action: () => setActiveTab('library') 
+        },
+        { 
+          label: language === 'zh' ? '离线缓存' : 'Downloads', 
+          icon: Download, 
+          action: () => setActiveTab('library') 
+        },
       ],
     },
     {
-      title: 'Referrals & Sharing',
+      title: t('profileReferrals'),
       items: [
-        { label: 'My Referral Code', icon: Gift, value: 'SOUL-ALICIA', action: () => setShowReferralModal(true) },
         { 
-          label: 'Mentor Partner Portal', 
+          label: t('myReferralCode'), 
+          icon: Gift, 
+          value: 'SOUL-ALICIA', 
+          action: () => setShowReferralModal(true) 
+        },
+        { 
+          label: t('mentorPartnerPortal'), 
           icon: Award, 
-          value: 'Commissions', 
+          value: t('mentorCommissions'), 
           highlight: true, 
           action: () => setIsMentorView(true) 
         },
       ],
     },
     {
-      title: 'Preferences & System',
+      title: t('profileSettings'),
       items: [
-        { label: 'Notification Settings', icon: Bell, value: 'Enabled', action: () => showToast('Notifications are active') },
-        { label: 'Language', icon: Globe, value: 'English (US)', action: () => showToast('Language set to English') },
-        { label: 'Wellness Personalization', icon: Sliders, action: () => setShowOnboarding(true) },
-        { label: 'Account Settings', icon: Settings, action: () => showToast('Account is verified') },
-        { label: 'Help Center & Support', icon: HelpCircle, action: () => showToast('Support team: support@soulflow.wellness') },
+        { 
+          label: language === 'zh' ? '推送与正念提醒' : 'Notification Settings', 
+          icon: Bell, 
+          value: language === 'zh' ? '已开启' : 'Enabled', 
+          action: () => showToast(language === 'zh' ? '每日晨起与睡前正念提醒已就绪' : 'Notifications are active') 
+        },
+        { 
+          label: t('languageSetting'), 
+          icon: Globe, 
+          value: language === 'zh' ? '简体中文' : 'English', 
+          highlight: true,
+          action: () => setShowLanguageModal(true) 
+        },
+        { 
+          label: language === 'zh' ? '身心健康定制问卷' : 'Wellness Personalization', 
+          icon: Sliders, 
+          action: () => setShowOnboarding(true) 
+        },
+        { 
+          label: language === 'zh' ? '账户与安全' : 'Account Settings', 
+          icon: Settings, 
+          action: () => showToast(language === 'zh' ? '账户认证状态良好' : 'Account is verified') 
+        },
+        { 
+          label: language === 'zh' ? '专属客服与圣殿指引' : 'Help Center & Support', 
+          icon: HelpCircle, 
+          action: () => showToast('support@soulflow.wellness') 
+        },
       ],
     },
   ];
@@ -136,7 +198,7 @@ export const ProfileView: React.FC = () => {
         {referringMentor && (
           <div className="mt-2 inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-[#dfb76c]/15 border border-[#dfb76c]/30 text-[10px] text-[#dfb76c] font-medium">
             <Sparkles className="w-3 h-3" />
-            <span>Referred by {referringMentor.name}</span>
+            <span>{t('referredBy', { name: referringMentor.name })}</span>
           </div>
         )}
 
@@ -144,23 +206,23 @@ export const ProfileView: React.FC = () => {
         <div className="mt-3 inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#dfb76c]/15 border border-[#dfb76c]/30 text-[#dfb76c] text-xs font-semibold">
           <Crown className="w-3.5 h-3.5 fill-current" />
           <span className="uppercase tracking-wider">
-            {user.membershipStatus === 'free' ? 'Free Member' : `SoulFlow ${user.membershipStatus}`}
+            {user.membershipStatus === 'free' ? t('freeMemberBadge') : `SoulFlow ${user.membershipStatus === 'premium' ? 'Pro' : 'VIP'}`}
           </span>
         </div>
 
         {/* Subtle Streak Stats Grid */}
         <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-white/5 text-center">
           <div>
-            <span className="text-sm font-bold text-white block font-mono">{streakInfo.currentStreak} Days</span>
-            <span className="text-[9px] text-stone-400 uppercase tracking-wider">Current Streak</span>
+            <span className="text-sm font-bold text-white block font-mono">{streakInfo.currentStreak} {t('days')}</span>
+            <span className="text-[9px] text-stone-400 uppercase tracking-wider">{language === 'zh' ? '连续修习' : 'Current Streak'}</span>
           </div>
           <div className="border-x border-white/5">
-            <span className="text-sm font-bold text-[#dfb76c] block font-mono">{streakInfo.longestStreak} Days</span>
-            <span className="text-[9px] text-stone-400 uppercase tracking-wider">Longest Streak</span>
+            <span className="text-sm font-bold text-[#dfb76c] block font-mono">{streakInfo.longestStreak} {t('days')}</span>
+            <span className="text-[9px] text-stone-400 uppercase tracking-wider">{language === 'zh' ? '历史最佳' : 'Longest Streak'}</span>
           </div>
           <div>
-            <span className="text-sm font-bold text-white block font-mono">{user.totalMinutesListened} Min</span>
-            <span className="text-[9px] text-stone-400 uppercase tracking-wider">Mindful Audio</span>
+            <span className="text-sm font-bold text-white block font-mono">{user.totalMinutesListened} {t('minutes')}</span>
+            <span className="text-[9px] text-stone-400 uppercase tracking-wider">{language === 'zh' ? '心流静修' : 'Mindful Audio'}</span>
           </div>
         </div>
       </div>
@@ -169,13 +231,13 @@ export const ProfileView: React.FC = () => {
       <div className="space-y-2.5">
         <div className="flex items-center justify-between px-1">
           <h3 className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider">
-            Following ({followedMentorsList.length})
+            {language === 'zh' ? `关注的导师 (${followedMentorsList.length})` : `Following (${followedMentorsList.length})`}
           </h3>
           <button
             onClick={() => setActiveTab('explore')}
             className="text-[11px] font-semibold text-[#dfb76c] hover:underline"
           >
-            Discover Guides →
+            {language === 'zh' ? '探索导师智库 →' : 'Discover Guides →'}
           </button>
         </div>
 
@@ -201,7 +263,9 @@ export const ProfileView: React.FC = () => {
           </div>
         ) : (
           <div className="p-4 rounded-2xl bg-[#121528] border border-white/5 text-center text-xs text-stone-400">
-            You haven't followed any mentors yet. Explore trusted guides to personalize your practices.
+            {language === 'zh' 
+              ? '你尚未关注任何导师。探索世界级导师，定制你的专属身心修习。' 
+              : "You haven't followed any mentors yet. Explore trusted guides to personalize your practices."}
           </div>
         )}
       </div>
@@ -252,8 +316,78 @@ export const ProfileView: React.FC = () => {
         className="w-full py-3 rounded-2xl bg-red-500/10 hover:bg-red-500/15 border border-red-500/20 text-red-300 text-xs font-semibold flex items-center justify-center space-x-2 transition-colors"
       >
         <LogOut className="w-4 h-4" />
-        <span>Log Out</span>
+        <span>{t('logout')}</span>
       </button>
+
+      {/* Language Switcher Modal */}
+      {showLanguageModal && (
+        <div 
+          onClick={() => setShowLanguageModal(false)}
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-sm bg-[#15192e] border border-white/10 rounded-3xl p-5 space-y-4"
+          >
+            <div className="flex items-center space-x-2.5">
+              <div className="w-9 h-9 rounded-xl bg-[#dfb76c]/15 text-[#dfb76c] flex items-center justify-center border border-[#dfb76c]/30">
+                <Globe className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white">{t('switchLanguageModalTitle')}</h3>
+                <p className="text-[11px] text-stone-400">选择应用界面首选语言</p>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-1">
+              <button
+                onClick={() => handleSwitchLanguage('zh')}
+                className={`w-full p-3.5 rounded-2xl border text-left flex items-center justify-between transition-all ${
+                  language === 'zh' 
+                    ? 'bg-[#dfb76c]/15 border-[#dfb76c]/60 text-white shadow-gold-glow' 
+                    : 'bg-white/5 border-white/5 text-stone-300 hover:bg-white/10'
+                }`}
+              >
+                <div>
+                  <span className="text-xs font-bold block text-white">简体中文（默认）</span>
+                  <span className="text-[10px] text-stone-400">东方心流美学与无损身心疗愈</span>
+                </div>
+                {language === 'zh' && (
+                  <div className="w-5 h-5 rounded-full bg-[#dfb76c] text-[#0a0c16] flex items-center justify-center">
+                    <Check className="w-3 h-3 stroke-[3]" />
+                  </div>
+                )}
+              </button>
+
+              <button
+                onClick={() => handleSwitchLanguage('en')}
+                className={`w-full p-3.5 rounded-2xl border text-left flex items-center justify-between transition-all ${
+                  language === 'en' 
+                    ? 'bg-[#dfb76c]/15 border-[#dfb76c]/60 text-white shadow-gold-glow' 
+                    : 'bg-white/5 border-white/5 text-stone-300 hover:bg-white/10'
+                }`}
+              >
+                <div>
+                  <span className="text-xs font-bold block text-white">English (US)</span>
+                  <span className="text-[10px] text-stone-400">Spatial Audio & Global Sacred Frequencies</span>
+                </div>
+                {language === 'en' && (
+                  <div className="w-5 h-5 rounded-full bg-[#dfb76c] text-[#0a0c16] flex items-center justify-center">
+                    <Check className="w-3 h-3 stroke-[3]" />
+                  </div>
+                )}
+              </button>
+            </div>
+
+            <button
+              onClick={() => setShowLanguageModal(false)}
+              className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-stone-300 text-xs font-medium"
+            >
+              {t('doneAction')}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Referral Code Modal */}
       {showReferralModal && (
@@ -269,9 +403,9 @@ export const ProfileView: React.FC = () => {
               <Gift className="w-6 h-6" />
             </div>
 
-            <h3 className="text-base font-bold text-white">Gift 7 Days Free</h3>
+            <h3 className="text-base font-bold text-white">{t('giftDaysTitle')}</h3>
             <p className="text-xs text-stone-300 leading-relaxed">
-              When friends sign up with your code, they get <strong>7 Days SoulFlow Premium</strong>, and you earn sanctuary credits!
+              {t('giftDaysDesc')}
             </p>
 
             <div className="p-3 bg-black/50 border border-white/10 rounded-xl flex items-center justify-between">
@@ -281,7 +415,7 @@ export const ProfileView: React.FC = () => {
                 className="px-3 py-1 rounded-lg bg-[#dfb76c]/20 text-[#dfb76c] text-xs font-semibold flex items-center space-x-1"
               >
                 {copiedReferral ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copiedReferral ? 'Copied' : 'Copy'}</span>
+                <span>{copiedReferral ? (language === 'zh' ? '已复制' : 'Copied') : (language === 'zh' ? '复制' : 'Copy')}</span>
               </button>
             </div>
 
@@ -289,7 +423,7 @@ export const ProfileView: React.FC = () => {
               onClick={() => setShowReferralModal(false)}
               className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-stone-300 text-xs font-medium"
             >
-              Done
+              {t('doneAction')}
             </button>
           </div>
         </div>

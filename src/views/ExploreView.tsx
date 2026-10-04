@@ -29,34 +29,35 @@ export const ExploreView: React.FC = () => {
     mentors, 
     programs,
     openMentorDetail,
-    openProgramDetail 
+    openProgramDetail,
+    t 
   } = useApp();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<'All' | 'Music' | 'Meditation' | 'Programs' | 'Mentors'>('All');
   const [selectedCategoryShortcut, setSelectedCategoryShortcut] = useState<string>('all');
 
-  // Category shortcuts
+  // Category shortcuts with localized labels
   const categoryShortcuts = [
-    { id: 'healing_music', label: 'Healing Music', icon: Music2 },
-    { id: 'sleep', label: 'Sleep', icon: Moon },
-    { id: 'guided_meditation', label: 'Meditation', icon: Sparkles },
-    { id: 'relaxation', label: 'Relaxation', icon: Feather },
-    { id: 'focus', label: 'Focus', icon: Compass },
-    { id: 'soundscape', label: 'Soundscape', icon: Waves },
-    { id: 'emotional_healing', label: 'Emotional Healing', icon: Heart },
-    { id: 'spiritual', label: 'Spiritual', icon: Sun },
-    { id: 'programs', label: 'Programs', icon: Calendar },
-    { id: 'mentors', label: 'Mentors', icon: Users },
+    { id: 'healing_music', label: t('catHealingMusic'), icon: Music2 },
+    { id: 'sleep', label: t('catSleep'), icon: Moon },
+    { id: 'guided_meditation', label: t('catMeditation'), icon: Sparkles },
+    { id: 'relaxation', label: t('catRelaxation'), icon: Feather },
+    { id: 'focus', label: t('catFocus'), icon: Compass },
+    { id: 'soundscape', label: t('catSoundscape'), icon: Waves },
+    { id: 'emotional_healing', label: t('catEmotionalHealing'), icon: Heart },
+    { id: 'spiritual', label: t('catSpiritual'), icon: Sun },
+    { id: 'programs', label: t('catPrograms'), icon: Calendar },
+    { id: 'mentors', label: t('catMentors'), icon: Users },
   ];
 
-  // Filters
-  const filters: Array<'All' | 'Music' | 'Meditation' | 'Programs' | 'Mentors'> = [
-    'All',
-    'Music',
-    'Meditation',
-    'Programs',
-    'Mentors',
+  // Localized Filters
+  const filters: Array<{ id: 'All' | 'Music' | 'Meditation' | 'Programs' | 'Mentors'; label: string }> = [
+    { id: 'All', label: t('filterAll') },
+    { id: 'Music', label: t('filterMusic') },
+    { id: 'Meditation', label: t('filterMeditation') },
+    { id: 'Programs', label: t('filterPrograms') },
+    { id: 'Mentors', label: t('filterMentors') },
   ];
 
   // Search Results Filtering
@@ -127,17 +128,17 @@ export const ExploreView: React.FC = () => {
   const focusProductivity = useMemo(() => tracks.filter(t => t.category === 'focus' || t.mood === 'focus').slice(0, 4), [tracks]);
   const natureSoundscapes = useMemo(() => tracks.filter(t => t.category === 'soundscape').slice(0, 4), [tracks]);
 
-  // Mentor categories filter state
+  // Mentor categories filter state with localized labels
   const [mentorCategoryFilter, setMentorCategoryFilter] = useState<string>('All');
   const mentorCategories = [
-    'All',
-    'Meditation',
-    'Sleep',
-    'Sound Healing',
-    'Breathwork',
-    'Emotional Wellness',
-    'Mindfulness',
-    'Spiritual Growth',
+    { id: 'All', label: t('mentorCatAll') },
+    { id: 'Meditation', label: t('mentorCatMeditation') },
+    { id: 'Sleep', label: t('mentorCatSleep') },
+    { id: 'Sound Healing', label: t('mentorCatSoundHealing') },
+    { id: 'Breathwork', label: t('mentorCatBreathwork') },
+    { id: 'Emotional Wellness', label: t('mentorCatEmotional') },
+    { id: 'Mindfulness', label: t('mentorCatMindfulness') },
+    { id: 'Spiritual Growth', label: t('mentorCatSpiritual') },
   ];
 
   const filteredMentorsList = useMemo(() => {
@@ -153,28 +154,28 @@ export const ExploreView: React.FC = () => {
       {/* Title */}
       <div>
         <h1 className="font-serif text-[26px] font-medium tracking-tight text-white/95">
-          Explore
+          {t('exploreTitle')}
         </h1>
         <p className="text-xs text-stone-400 font-light mt-0.5 tracking-wide">
-          Sacred frequencies, guided sessions and masterclasses
+          {t('exploreSub')}
         </p>
       </div>
 
-      {/* Top Search Bar with exact requested placeholder */}
+      {/* Top Search Bar */}
       <SearchBar
         value={searchQuery}
         onChange={setSearchQuery}
-        placeholder="Search music, meditation, mentors or programs"
+        placeholder={t('searchPlaceholder')}
       />
 
       {/* Category Shortcuts (Horizontal scroll) */}
       <div className="space-y-2">
         <span className="text-[10px] font-mono uppercase tracking-wider text-stone-400 px-0.5">
-          Categories
+          {t('categoriesLabel')}
         </span>
         <div className="flex space-x-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
           <CategoryChip
-            label="All Categories"
+            label={t('allCategories')}
             isActive={selectedCategoryShortcut === 'all'}
             onClick={() => setSelectedCategoryShortcut('all')}
           />
@@ -194,15 +195,15 @@ export const ExploreView: React.FC = () => {
       <div className="flex items-center space-x-1.5 overflow-x-auto no-scrollbar pb-1">
         {filters.map(f => (
           <button
-            key={f}
-            onClick={() => setSelectedFilter(f)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-              selectedFilter === f
+            key={f.id}
+            onClick={() => setSelectedFilter(f.id)}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+              selectedFilter === f.id
                 ? 'bg-[#dfb76c] text-[#0a0c16] font-semibold shadow-gold-glow'
                 : 'bg-[#121528] text-stone-300 hover:text-white border border-white/5'
             }`}
           >
-            {f}
+            {f.label}
           </button>
         ))}
       </div>
@@ -212,7 +213,7 @@ export const ExploreView: React.FC = () => {
         <div className="space-y-6 animate-fade-in">
           <div className="flex items-center justify-between px-0.5 pb-2 border-b border-white/5">
             <span className="text-xs font-semibold text-white">
-              {searchResults.totalCount} results found
+              {t('resultsFound', { count: searchResults.totalCount })}
             </span>
             <button
               onClick={() => {
@@ -222,14 +223,14 @@ export const ExploreView: React.FC = () => {
               }}
               className="text-xs text-[#dfb76c] hover:underline"
             >
-              Reset Filters
+              {t('resetFilters')}
             </button>
           </div>
 
           {/* Matched Tracks */}
           {searchResults.tracks.length > 0 && (
             <div className="space-y-3">
-              <SectionHeader title="Tracks & Audio" count={searchResults.tracks.length} />
+              <SectionHeader title={t('tracksSection')} count={searchResults.tracks.length} />
               <div className="grid grid-cols-2 gap-3.5">
                 {searchResults.tracks.map(track => (
                   <ContentCard key={track.id} track={track} layout="card" onPlayList={searchResults.tracks} />
@@ -241,7 +242,7 @@ export const ExploreView: React.FC = () => {
           {/* Matched Programs */}
           {searchResults.programs.length > 0 && (
             <div className="space-y-3">
-              <SectionHeader title="Programs & Journeys" count={searchResults.programs.length} />
+              <SectionHeader title={t('programsSection')} count={searchResults.programs.length} />
               <div className="space-y-3">
                 {searchResults.programs.map(prog => (
                   <div
@@ -267,7 +268,7 @@ export const ExploreView: React.FC = () => {
           {/* Matched Mentors */}
           {searchResults.mentors.length > 0 && (
             <div className="space-y-3">
-              <SectionHeader title="Mentors & Guides" count={searchResults.mentors.length} />
+              <SectionHeader title={t('mentorsSection')} count={searchResults.mentors.length} />
               <div className="space-y-3">
                 {searchResults.mentors.map(mentor => (
                   <MentorCard key={mentor.id} mentor={mentor} onSelect={openMentorDetail} />
@@ -280,8 +281,8 @@ export const ExploreView: React.FC = () => {
           {searchResults.totalCount === 0 && (
             <div className="text-center py-16 px-4 rounded-3xl bg-[#121528] border border-white/5 space-y-2">
               <Sparkles className="w-8 h-8 text-stone-600 mx-auto" />
-              <p className="text-sm font-semibold text-white">No matching sanctuary content</p>
-              <p className="text-xs text-stone-400">Try searching for "Sleep", "Piano", "432Hz", or mentor names like "Maya Chen".</p>
+              <p className="text-sm font-semibold text-white">{t('noResultsTitle')}</p>
+              <p className="text-xs text-stone-400">{t('noResultsSub')}</p>
             </div>
           )}
         </div>
@@ -291,8 +292,8 @@ export const ExploreView: React.FC = () => {
           {/* MENTOR DISCOVERY: Learn From Trusted Mentors */}
           <div className="space-y-3.5">
             <SectionHeader 
-              title="Learn From Trusted Mentors" 
-              subtitle="World-class guides in mindfulness, circadian neuroscience & sound alchemy"
+              title={t('mentorDiscoveryTitle')} 
+              subtitle={t('mentorDiscoverySub')}
               icon={Sparkles}
             />
 
@@ -300,15 +301,15 @@ export const ExploreView: React.FC = () => {
             <div className="flex items-center space-x-1.5 overflow-x-auto no-scrollbar pb-1">
               {mentorCategories.map(cat => (
                 <button
-                  key={cat}
-                  onClick={() => setMentorCategoryFilter(cat)}
+                  key={cat.id}
+                  onClick={() => setMentorCategoryFilter(cat.id)}
                   className={`px-3 py-1 rounded-full text-[11px] font-medium transition-all whitespace-nowrap ${
-                    mentorCategoryFilter === cat
+                    mentorCategoryFilter === cat.id
                       ? 'bg-[#dfb76c] text-[#0a0c16] font-semibold shadow-gold-glow'
                       : 'bg-[#121528] text-stone-400 hover:text-white border border-white/5'
                   }`}
                 >
-                  {cat}
+                  {cat.label}
                 </button>
               ))}
             </div>
@@ -326,8 +327,8 @@ export const ExploreView: React.FC = () => {
           {/* 1. Popular Now */}
           <div className="space-y-3">
             <SectionHeader 
-              title="Popular Now" 
-              subtitle="Most played frequencies across the sanctuary" 
+              title={t('popularNow')} 
+              subtitle={t('popularNowSub')} 
               icon={Flame}
             />
             <div className="grid grid-cols-2 gap-3.5">
@@ -340,8 +341,8 @@ export const ExploreView: React.FC = () => {
           {/* 2. New Releases */}
           <div className="space-y-3">
             <SectionHeader 
-              title="New Releases" 
-              subtitle="Recently composed soundscapes & acoustic journeys"
+              title={t('newReleases')} 
+              subtitle={t('newReleasesSub')}
               icon={Sparkles}
             />
             <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
@@ -356,8 +357,8 @@ export const ExploreView: React.FC = () => {
           {/* 3. Sleep Collection */}
           <div className="space-y-3">
             <SectionHeader 
-              title="Sleep Collection" 
-              subtitle="Delta entrainment, midnight rain & crystal bowls"
+              title={t('sleepCollection')} 
+              subtitle={t('sleepCollectionSub')}
               icon={Moon}
             />
             <div className="grid grid-cols-2 gap-3.5">
@@ -370,8 +371,8 @@ export const ExploreView: React.FC = () => {
           {/* 4. Stress Relief */}
           <div className="space-y-3">
             <SectionHeader 
-              title="Stress Relief" 
-              subtitle="Vagus nerve regulation & somatic down-shifting"
+              title={t('stressRelief')} 
+              subtitle={t('stressReliefSub')}
               icon={Wind}
             />
             <div className="grid grid-cols-2 gap-3.5">
@@ -384,8 +385,8 @@ export const ExploreView: React.FC = () => {
           {/* 5. Focus & Productivity */}
           <div className="space-y-3">
             <SectionHeader 
-              title="Focus & Productivity" 
-              subtitle="10Hz Alpha clarity & clean cognitive flow"
+              title={t('focusProductivity')} 
+              subtitle={t('focusProductivitySub')}
               icon={Compass}
             />
             <div className="grid grid-cols-2 gap-3.5">
@@ -398,8 +399,8 @@ export const ExploreView: React.FC = () => {
           {/* 6. Nature Soundscapes */}
           <div className="space-y-3">
             <SectionHeader 
-              title="Nature Soundscapes" 
-              subtitle="Organic binaural wildlands, oceans & redwoods"
+              title={t('natureSoundscapes')} 
+              subtitle={t('natureSoundscapesSub')}
               icon={Waves}
             />
             <div className="grid grid-cols-2 gap-3.5">

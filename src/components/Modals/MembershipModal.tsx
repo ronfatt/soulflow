@@ -29,7 +29,9 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
     activeSubscription,
     cancelCurrentSubscription,
     applyReferralCode, 
-    showToast 
+    showToast,
+    language,
+    t 
   } = useApp();
 
   const [billingCycle, setBillingCycle] = useState<BillingCycle>('annual');
@@ -63,7 +65,7 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
   const handleCancelSub = async () => {
     await cancelCurrentSubscription();
     setShowCancelConfirm(false);
-    showToast('Subscription cancelled. You will retain access until the end of your billing cycle.');
+    showToast(language === 'zh' ? '会员自动续费已关闭，本周期内权益仍可正常使用' : 'Subscription cancelled. You will retain access until the end of your billing cycle.');
   };
 
   return (
@@ -88,11 +90,11 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
           <div className="inline-flex items-center justify-center p-2.5 rounded-2xl bg-gradient-to-tr from-[#dfb76c]/20 to-[#a599e0]/20 border border-[#dfb76c]/30 mb-2.5 shadow-gold-glow">
             <Crown className="w-6 h-6 text-[#dfb76c] fill-[#dfb76c]" />
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-white">
-            Your SoulFlow Practice
+          <h2 className="text-2xl font-bold tracking-tight text-white font-serif">
+            {t('upgradeTitle')}
           </h2>
-          <p className="text-xs text-stone-300 mt-1 max-w-xs mx-auto">
-            Deepen your sleep, eliminate chronic stress, and immerse in master-level acoustic healing.
+          <p className="text-xs text-stone-300 mt-1 max-w-xs mx-auto leading-relaxed">
+            {t('upgradeSub')}
           </p>
 
           {/* Active Subscription Status Banner if subscribed or in trial */}
@@ -101,14 +103,14 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
               <div className="flex items-center justify-between">
                 <div>
                   <span className="text-[10px] uppercase font-bold tracking-wider text-[#dfb76c] block">
-                    Current Plan
+                    {language === 'zh' ? '当前订阅方案' : 'Current Plan'}
                   </span>
                   <h4 className="text-sm font-bold text-white capitalize">
-                    {user.membershipStatus === 'premium_plus' ? 'Premium+ Master' : 'Premium Journey'}
+                    {user.membershipStatus === 'premium_plus' ? t('planPremiumPlus') : t('planPremium')}
                   </h4>
                 </div>
                 <span className="text-xs px-2.5 py-1 rounded-full bg-[#dfb76c]/20 text-[#f3cf7a] font-semibold border border-[#dfb76c]/40">
-                  {isTrial ? 'Free Trial' : 'Active'}
+                  {isTrial ? (language === 'zh' ? '免费试用中' : 'Free Trial') : t('activeStatus')}
                 </span>
               </div>
 
@@ -118,12 +120,12 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
                   <Calendar className="w-3.5 h-3.5 text-stone-400" />
                   <span>
                     {isTrial 
-                      ? `${remainingTrialDays} days remaining in trial`
-                      : `Renews: ${user.membershipExpiresAt ? new Date(user.membershipExpiresAt).toLocaleDateString() : 'Annual'}`}
+                      ? (language === 'zh' ? `试用剩余 ${remainingTrialDays} 天` : `${remainingTrialDays} days remaining in trial`)
+                      : (language === 'zh' ? `自动续订日：${user.membershipExpiresAt ? new Date(user.membershipExpiresAt).toLocaleDateString() : '按年'}` : `Renews: ${user.membershipExpiresAt ? new Date(user.membershipExpiresAt).toLocaleDateString() : 'Annual'}`)}
                   </span>
                 </span>
                 <span className="capitalize text-stone-400">
-                  Cycle: {user.billingCycle || 'Annual'}
+                  {language === 'zh' ? (user.billingCycle === 'monthly' ? '按月' : '按年') : (user.billingCycle || 'Annual')}
                 </span>
               </div>
 
@@ -133,7 +135,7 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
                   onClick={() => setShowCancelConfirm(true)}
                   className="text-[11px] text-stone-400 hover:text-rose-400 transition-colors underline"
                 >
-                  Cancel Subscription
+                  {language === 'zh' ? '取消续订' : 'Cancel Subscription'}
                 </button>
               </div>
 
@@ -141,20 +143,20 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
               {showCancelConfirm && (
                 <div className="mt-3 p-3 rounded-xl bg-black/40 border border-rose-500/30 text-xs">
                   <p className="text-stone-300 mb-2">
-                    Are you sure you want to cancel? You will keep benefits until your billing period ends.
+                    {language === 'zh' ? '确定要取消自动续费吗？当前周期内你仍享有完整的会员权益。' : 'Are you sure you want to cancel? You will keep benefits until your billing period ends.'}
                   </p>
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={handleCancelSub}
                       className="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 font-semibold hover:bg-rose-500/30"
                     >
-                      Confirm Cancellation
+                      {language === 'zh' ? '确认取消' : 'Confirm Cancellation'}
                     </button>
                     <button
                       onClick={() => setShowCancelConfirm(false)}
                       className="px-3 py-1.5 rounded-lg bg-white/10 text-stone-300 font-medium"
                     >
-                      Keep Plan
+                      {language === 'zh' ? '保留会员' : 'Keep Plan'}
                     </button>
                   </div>
                 </div>
@@ -170,7 +172,7 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
                 billingCycle === 'monthly' ? 'bg-[#d4af37] text-[#0a0c16] font-semibold' : 'text-stone-400'
               }`}
             >
-              Monthly
+              {t('planMonthly')}
             </button>
             <button
               onClick={() => setBillingCycle('annual')}
@@ -178,9 +180,9 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
                 billingCycle === 'annual' ? 'bg-[#d4af37] text-[#0a0c16] font-semibold' : 'text-stone-400'
               }`}
             >
-              <span>Annual</span>
+              <span>{t('planAnnual')}</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/80 text-[#dfb76c] font-bold">
-                Save 17%
+                {t('savePercent')}
               </span>
             </button>
           </div>
@@ -230,8 +232,8 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
           }`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-stone-200">{freePlan.name}</h3>
-                <p className="text-[11px] text-stone-400">Basic daily wellness</p>
+                <h3 className="text-sm font-bold text-stone-200">{language === 'zh' ? '基础免费版' : freePlan.name}</h3>
+                <p className="text-[11px] text-stone-400">{language === 'zh' ? '基础正念音频与基础歌单' : 'Basic daily wellness'}</p>
               </div>
               <span className="text-sm font-semibold text-stone-300">RM0</span>
             </div>
@@ -248,23 +250,23 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
           {/* PREMIUM (Recommended) */}
           <div className="relative p-4 rounded-2xl border-2 border-[#d4af37] bg-gradient-to-b from-[#1c1b2f] to-[#12152b] shadow-gold-glow">
             <div className="absolute -top-3 right-4 px-2.5 py-0.5 rounded-full bg-[#d4af37] text-[#0a0c16] text-[10px] font-bold uppercase tracking-wider">
-              Most Popular
+              {language === 'zh' ? '最受欢迎' : 'Most Popular'}
             </div>
 
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center space-x-1.5">
-                  <h3 className="text-base font-bold text-white">{premiumPlan.name}</h3>
+                  <h3 className="text-base font-bold text-white">{language === 'zh' ? '心流尊享会员' : premiumPlan.name}</h3>
                   <Crown className="w-4 h-4 text-[#dfb76c] fill-[#dfb76c]" />
                 </div>
-                <p className="text-xs text-stone-300">Complete healing catalog & programs</p>
+                <p className="text-xs text-stone-300">{language === 'zh' ? '畅享全库无损疗愈音频与多日进阶蜕变旅程' : 'Complete healing catalog & programs'}</p>
               </div>
               <div className="text-right">
                 <span className="text-lg font-bold text-white">
                   {billingCycle === 'annual' ? formatMYR(premiumPlan.annual_price) : formatMYR(premiumPlan.monthly_price)}
                 </span>
-                <span className="text-[11px] text-stone-400 block">
-                  {billingCycle === 'annual' ? '/year (RM16.58/mo)' : '/month'}
+                <span className="text-[11px] text-stone-400 block font-mono">
+                  {billingCycle === 'annual' ? (language === 'zh' ? '/年（约 RM16.58/月）' : '/year (RM16.58/mo)') : (language === 'zh' ? '/月' : '/month')}
                 </span>
               </div>
             </div>
@@ -282,7 +284,7 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
               onClick={() => handleSelectTier('premium')}
               className="mt-4 w-full py-3 rounded-xl bg-gradient-to-r from-[#dfb76c] via-[#f3cf7a] to-[#d4af37] text-[#0a0c16] font-bold text-xs shadow-lg hover:brightness-105 active:scale-[0.99] transition-all flex items-center justify-center space-x-1.5"
             >
-              <span>Upgrade to Premium</span>
+              <span>{language === 'zh' ? '开通尊享会员' : 'Upgrade to Premium'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -292,17 +294,17 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center space-x-1.5">
-                  <h3 className="text-sm font-bold text-white">{premiumPlusPlan.name}</h3>
+                  <h3 className="text-sm font-bold text-white">{language === 'zh' ? '导师大师版 VIP' : premiumPlusPlan.name}</h3>
                   <Sparkles className="w-3.5 h-3.5 text-[#a599e0]" />
                 </div>
-                <p className="text-[11px] text-stone-300">All features + Master Mentor Courses</p>
+                <p className="text-[11px] text-stone-300">{language === 'zh' ? '包含全套独家导师专栏课与高阶工作坊' : 'All features + Master Mentor Courses'}</p>
               </div>
               <div className="text-right">
                 <span className="text-base font-bold text-white">
                   {billingCycle === 'annual' ? formatMYR(premiumPlusPlan.annual_price) : formatMYR(premiumPlusPlan.monthly_price)}
                 </span>
-                <span className="text-[10px] text-stone-400 block">
-                  {billingCycle === 'annual' ? '/year (RM33.25/mo)' : '/month'}
+                <span className="text-[10px] text-stone-400 block font-mono">
+                  {billingCycle === 'annual' ? (language === 'zh' ? '/年（约 RM33.25/月）' : '/year (RM33.25/mo)') : (language === 'zh' ? '/月' : '/month')}
                 </span>
               </div>
             </div>
@@ -320,7 +322,7 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
               onClick={() => handleSelectTier('premium_plus')}
               className="mt-3.5 w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-[#a599e0] hover:text-white border border-[#a599e0]/30 font-semibold text-xs transition-all flex items-center justify-center space-x-1"
             >
-              <span>Choose Premium+</span>
+              <span>{language === 'zh' ? '选择导师大师版' : 'Choose Premium+'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -330,12 +332,12 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
         <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-center space-x-3 text-[10px] text-stone-500">
           <span className="flex items-center space-x-1">
             <Shield className="w-3 h-3 text-[#dfb76c]" />
-            <span>Cancel anytime</span>
+            <span>{language === 'zh' ? '随时可取消' : 'Cancel anytime'}</span>
           </span>
           <span>•</span>
-          <span>Apple Pay & Stripe secured</span>
+          <span>{language === 'zh' ? 'Stripe & Apple 安全支付' : 'Apple Pay & Stripe secured'}</span>
           <span>•</span>
-          <span>Restore Purchase</span>
+          <span>{language === 'zh' ? '恢复购买' : 'Restore Purchase'}</span>
         </div>
       </div>
     </div>

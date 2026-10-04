@@ -71,16 +71,38 @@ const MOODS: MoodOption[] = [
 ];
 
 export const MoodSelector: React.FC = () => {
-  const { selectedMood, setSelectedMood } = useApp();
+  const { selectedMood, setSelectedMood, t, language } = useApp();
+
+  const getMoodLabel = (key: ContentMood) => {
+    switch (key) {
+      case 'sleep': return language === 'zh' ? '助眠' : 'Sleep';
+      case 'stress': return language === 'zh' ? '释压' : 'Stress';
+      case 'relax': return language === 'zh' ? '松弛' : 'Relax';
+      case 'meditation': return language === 'zh' ? '冥想' : 'Meditation';
+      case 'focus': return language === 'zh' ? '专注' : 'Focus';
+      case 'spiritual': return language === 'zh' ? '灵修' : 'Spiritual';
+    }
+  };
+
+  const getMoodFreq = (key: ContentMood) => {
+    switch (key) {
+      case 'sleep': return language === 'zh' ? 'Delta 3Hz' : 'Delta 3Hz';
+      case 'stress': return language === 'zh' ? '396Hz 舒缓' : '396Hz Reset';
+      case 'relax': return language === 'zh' ? '432Hz 疗愈' : '432Hz Calm';
+      case 'meditation': return language === 'zh' ? 'Theta 6Hz' : 'Theta 6Hz';
+      case 'focus': return language === 'zh' ? 'Alpha 10Hz' : 'Alpha 10Hz';
+      case 'spiritual': return language === 'zh' ? '528Hz 赋活' : '528Hz DNA';
+    }
+  };
 
   return (
     <div className="w-full">
       <div className="flex items-baseline justify-between mb-3 px-0.5">
         <h3 className="font-serif text-[16px] font-medium tracking-tight text-white/95">
-          How are you feeling today?
+          {t('moodTitle')}
         </h3>
         <span className="text-[10px] font-mono text-[#dfb76c] tracking-widest uppercase font-medium">
-          Acoustic Resonance
+          {t('moodTuning')}
         </span>
       </div>
 
@@ -120,13 +142,13 @@ export const MoodSelector: React.FC = () => {
               <span className={`text-xs font-medium tracking-tight transition-colors ${
                 isSelected ? 'text-white font-semibold' : 'text-stone-300'
               }`}>
-                {item.label}
+                {getMoodLabel(item.key)}
               </span>
               
               <span className={`text-[9px] font-mono mt-0.5 tracking-tight transition-colors ${
                 isSelected ? 'text-[#dfb76c]' : 'text-stone-500'
               }`}>
-                {item.frequency}
+                {getMoodFreq(item.key)}
               </span>
             </button>
           );

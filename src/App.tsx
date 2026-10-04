@@ -36,7 +36,9 @@ export const App: React.FC = () => {
     showCheckoutModal,
     checkoutParams,
     openCheckoutModal,
-    closeCheckoutModal 
+    closeCheckoutModal,
+    language,
+    t 
   } = useApp();
 
   const [showPortalMenu, setShowPortalMenu] = React.useState(false);
@@ -64,7 +66,9 @@ export const App: React.FC = () => {
         <div className="flex items-center space-x-2.5">
           <span className="w-2 h-2 rounded-full bg-[#dfb76c] shadow-[0_0_10px_#dfb76c] animate-pulse" />
           <span className="font-serif tracking-widest text-[#f5e4b8] font-medium text-sm">SOULFLOW</span>
-          <span className="text-[10px] text-stone-500 font-mono tracking-wider">• SPATIAL WELLNESS RELEASE</span>
+          <span className="text-[10px] text-stone-500 font-mono tracking-wider">
+            {language === 'zh' ? '• 心流身心灵空间音频旗舰版' : '• SPATIAL WELLNESS RELEASE'}
+          </span>
         </div>
 
         <div className="flex items-center space-x-2.5">
@@ -77,7 +81,7 @@ export const App: React.FC = () => {
               }`}
             >
               <Smartphone className="w-3.5 h-3.5" />
-              <span>Studio Handset</span>
+              <span>{language === 'zh' ? '掌上真机' : 'Studio Handset'}</span>
             </button>
 
             <button
@@ -87,24 +91,24 @@ export const App: React.FC = () => {
               }`}
             >
               <Monitor className="w-3.5 h-3.5" />
-              <span>Expanded View</span>
+              <span>{language === 'zh' ? '宽屏模式' : 'Expanded View'}</span>
             </button>
           </div>
 
-          {/* Discreet Portals Menu (Replaces amateurish prototype buttons) */}
+          {/* Discreet Portals Menu */}
           <div className="relative">
             <button
               onClick={() => setShowPortalMenu(!showPortalMenu)}
               className="flex items-center space-x-1.5 px-3 py-1.5 rounded-2xl bg-[#0d1020]/90 hover:bg-[#151933] border border-white/[0.08] text-stone-300 hover:text-white transition-all text-xs backdrop-blur-xl"
             >
               <Compass className="w-3.5 h-3.5 text-[#dfb76c]" />
-              <span>Portals & Views</span>
+              <span>{language === 'zh' ? '系统入口与管理' : 'Portals & Views'}</span>
               <ChevronDown className="w-3 h-3 text-stone-500" />
             </button>
 
             {showPortalMenu && (
               <div 
-                className="absolute right-0 mt-2 w-52 rounded-2xl bg-[#0e1226]/95 backdrop-blur-2xl border border-white/10 shadow-2xl p-1.5 z-50 animate-fade-in"
+                className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0e1226]/95 backdrop-blur-2xl border border-white/10 shadow-2xl p-1.5 z-50 animate-fade-in"
                 onMouseLeave={() => setShowPortalMenu(false)}
               >
                 <button
@@ -112,7 +116,7 @@ export const App: React.FC = () => {
                   className="w-full px-3 py-2 rounded-xl text-left text-xs text-stone-300 hover:text-white hover:bg-white/5 flex items-center space-x-2 transition-colors"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-[#dfb76c]" />
-                  <span>Onboarding Journey</span>
+                  <span>{language === 'zh' ? '身心偏好问卷 (Onboarding)' : 'Onboarding Journey'}</span>
                 </button>
 
                 <button
@@ -120,7 +124,7 @@ export const App: React.FC = () => {
                   className="w-full px-3 py-2 rounded-xl text-left text-xs text-purple-300 hover:bg-purple-500/10 flex items-center space-x-2 transition-colors"
                 >
                   <Award className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Mentor Partner Portal</span>
+                  <span>{language === 'zh' ? '导师合伙人工作台' : 'Mentor Partner Portal'}</span>
                 </button>
 
                 <button
@@ -128,7 +132,7 @@ export const App: React.FC = () => {
                   className="w-full px-3 py-2 rounded-xl text-left text-xs text-[#dfb76c] hover:bg-[#dfb76c]/10 flex items-center space-x-2 transition-colors"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-[#dfb76c]" />
-                  <span>Admin Commission Hub</span>
+                  <span>{language === 'zh' ? '总后台分销中枢' : 'Admin Commission Hub'}</span>
                 </button>
               </div>
             )}
@@ -151,7 +155,9 @@ export const App: React.FC = () => {
           {/* Dynamic Island pill with TrueDepth camera sensor reflection */}
           <div className="w-28 h-6 bg-black rounded-full flex items-center justify-between px-2.5 border border-white/[0.06] shadow-inner">
             <span className="w-2 h-2 rounded-full bg-[#dfb76c] animate-pulse" />
-            <span className="text-[9px] text-[#f5e4b8] font-mono tracking-tighter">432Hz Bath</span>
+            <span className="text-[9px] text-[#f5e4b8] font-mono tracking-tighter">
+              {language === 'zh' ? '432Hz 疗愈' : '432Hz Bath'}
+            </span>
             <div className="w-2 h-2 rounded-full bg-[#0a0d18] border border-white/10" />
           </div>
 

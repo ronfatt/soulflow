@@ -17,12 +17,20 @@ const TABS: TabItem[] = [
 ];
 
 export const BottomNavigation: React.FC = () => {
-  const { activeTab, setActiveTab } = useApp();
+  const { activeTab, setActiveTab, t } = useApp();
+
+  const tabs: Array<{ id: MainTab; label: string; icon: React.ElementType }> = [
+    { id: 'home', label: t('navHome'), icon: Home },
+    { id: 'explore', label: t('navExplore'), icon: Compass },
+    { id: 'journey', label: t('navJourney'), icon: MapPin },
+    { id: 'library', label: t('navLibrary'), icon: Library },
+    { id: 'profile', label: t('navProfile'), icon: User },
+  ];
 
   return (
     <nav className="sticky bottom-0 inset-x-0 z-30 select-none bg-[#090b16]/92 backdrop-blur-2xl border-t border-white/[0.07] pb-safe shadow-[0_-10px_30px_rgba(0,0,0,0.6)]">
       <div className="flex items-center justify-around py-2 px-3 max-w-md mx-auto">
-        {TABS.map((tab) => {
+        {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
 

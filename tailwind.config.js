@@ -42,8 +42,9 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'Inter', 'Segoe UI', 'Roboto', 'sans-serif'],
-        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', 'sans-serif'],
+        serif: ['"Playfair Display"', '"Noto Serif SC"', '"Songti SC"', 'STSong', 'Georgia', 'serif'],
+        display: ['"Playfair Display"', '"Noto Serif SC"', 'serif'],
       },
       boxShadow: {
         'soft-glow': '0 8px 32px 0 rgba(144, 135, 197, 0.15)',
