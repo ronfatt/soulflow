@@ -12,7 +12,7 @@ interface SearchBarProps {
 export const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChange,
-  placeholder = 'Search music, meditation, mentors or programs',
+  placeholder = '搜索疗愈音乐、正念冥想、名师或修习方案...',
   onClear,
   className = '',
 }) => {

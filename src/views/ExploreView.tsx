@@ -150,7 +150,7 @@ export const ExploreView: React.FC = () => {
   }, [mentors, mentorCategoryFilter]);
 
   return (
-    <div className="space-y-6 pb-24 pt-3 px-4 max-w-md mx-auto animate-fade-in select-none">
+    <div className="space-y-8 pb-32 pt-3 px-2 sm:px-4 max-w-md lg:max-w-6xl mx-auto animate-fade-in select-none">
       {/* Title */}
       <div>
         <h1 className="font-serif text-[26px] font-medium tracking-tight text-white/95">
@@ -231,7 +231,7 @@ export const ExploreView: React.FC = () => {
           {searchResults.tracks.length > 0 && (
             <div className="space-y-3">
               <SectionHeader title={t('tracksSection')} count={searchResults.tracks.length} />
-              <div className="grid grid-cols-2 gap-3.5">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {searchResults.tracks.map(track => (
                   <ContentCard key={track.id} track={track} layout="card" onPlayList={searchResults.tracks} />
                 ))}
@@ -243,22 +243,22 @@ export const ExploreView: React.FC = () => {
           {searchResults.programs.length > 0 && (
             <div className="space-y-3">
               <SectionHeader title={t('programsSection')} count={searchResults.programs.length} />
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {searchResults.programs.map(prog => (
                   <div
                     key={prog.id}
                     onClick={() => openProgramDetail(prog)}
-                    className="p-4 rounded-2xl bg-[#121528] border border-white/5 hover:border-[#dfb76c]/40 transition-all cursor-pointer flex items-center justify-between"
+                    className="p-4 rounded-2xl bg-[#121528] border border-white/5 hover:border-[#dfb76c]/40 transition-all cursor-pointer flex items-center justify-between group"
                   >
                     <div className="flex items-center space-x-3.5 min-w-0 pr-2">
                       <img src={prog.coverUrl} alt={prog.title} className="w-14 h-14 rounded-xl object-cover flex-shrink-0" />
                       <div className="min-w-0">
-                        <span className="text-[10px] text-[#dfb76c] font-mono font-bold">{prog.totalDays} Days</span>
+                        <span className="text-[10px] text-[#dfb76c] font-mono font-bold">{prog.totalDays} 天计划</span>
                         <h4 className="text-xs font-bold text-white truncate">{prog.title}</h4>
                         <p className="text-[10px] text-stone-400 truncate">{prog.mentorName}</p>
                       </div>
                     </div>
-                    <span className="text-xs font-semibold text-[#dfb76c] flex-shrink-0">View</span>
+                    <span className="text-xs font-semibold text-[#dfb76c] group-hover:translate-x-0.5 transition-transform flex-shrink-0">查看详情 →</span>
                   </div>
                 ))}
               </div>
@@ -269,7 +269,7 @@ export const ExploreView: React.FC = () => {
           {searchResults.mentors.length > 0 && (
             <div className="space-y-3">
               <SectionHeader title={t('mentorsSection')} count={searchResults.mentors.length} />
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {searchResults.mentors.map(mentor => (
                   <MentorCard key={mentor.id} mentor={mentor} onSelect={openMentorDetail} />
                 ))}
@@ -314,10 +314,10 @@ export const ExploreView: React.FC = () => {
               ))}
             </div>
 
-            {/* Mentor Cards Horizontal Slider */}
-            <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+            {/* Mentor Cards Horizontal Slider / Desktop Grid */}
+            <div className="flex lg:grid lg:grid-cols-3 lg:space-x-0 lg:gap-4 space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-2 sm:-mx-4 lg:mx-0 px-2 sm:px-4 lg:px-0">
               {filteredMentorsList.map(mentor => (
-                <div key={mentor.id} className="w-72 flex-shrink-0">
+                <div key={mentor.id} className="w-72 lg:w-auto flex-shrink-0">
                   <MentorCard mentor={mentor} onSelect={openMentorDetail} layout="card" />
                 </div>
               ))}
@@ -331,7 +331,7 @@ export const ExploreView: React.FC = () => {
               subtitle={t('popularNowSub')} 
               icon={Flame}
             />
-            <div className="grid grid-cols-2 gap-3.5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {popularNow.map(track => (
                 <ContentCard key={track.id} track={track} layout="card" onPlayList={popularNow} />
               ))}
@@ -342,12 +342,12 @@ export const ExploreView: React.FC = () => {
           <div className="space-y-3">
             <SectionHeader 
               title={t('newReleases')} 
-              subtitle={t('newReleasesSub')}
+              subtitle={t('newReleasesSub')} 
               icon={Sparkles}
             />
-            <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+            <div className="flex lg:grid lg:grid-cols-4 lg:space-x-0 lg:gap-4 space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-2 sm:-mx-4 lg:mx-0 px-2 sm:px-4 lg:px-0">
               {newReleases.map(track => (
-                <div key={track.id} className="w-48 flex-shrink-0">
+                <div key={track.id} className="w-48 lg:w-auto flex-shrink-0">
                   <ContentCard track={track} layout="card" onPlayList={newReleases} />
                 </div>
               ))}
@@ -358,10 +358,10 @@ export const ExploreView: React.FC = () => {
           <div className="space-y-3">
             <SectionHeader 
               title={t('sleepCollection')} 
-              subtitle={t('sleepCollectionSub')}
+              subtitle={t('sleepCollectionSub')} 
               icon={Moon}
             />
-            <div className="grid grid-cols-2 gap-3.5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {sleepCollection.map(track => (
                 <ContentCard key={track.id} track={track} layout="card" onPlayList={sleepCollection} />
               ))}
@@ -372,10 +372,10 @@ export const ExploreView: React.FC = () => {
           <div className="space-y-3">
             <SectionHeader 
               title={t('stressRelief')} 
-              subtitle={t('stressReliefSub')}
+              subtitle={t('stressReliefSub')} 
               icon={Wind}
             />
-            <div className="grid grid-cols-2 gap-3.5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {stressRelief.map(track => (
                 <ContentCard key={track.id} track={track} layout="card" onPlayList={stressRelief} />
               ))}
@@ -386,10 +386,10 @@ export const ExploreView: React.FC = () => {
           <div className="space-y-3">
             <SectionHeader 
               title={t('focusProductivity')} 
-              subtitle={t('focusProductivitySub')}
+              subtitle={t('focusProductivitySub')} 
               icon={Compass}
             />
-            <div className="grid grid-cols-2 gap-3.5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {focusProductivity.map(track => (
                 <ContentCard key={track.id} track={track} layout="card" onPlayList={focusProductivity} />
               ))}
@@ -400,10 +400,10 @@ export const ExploreView: React.FC = () => {
           <div className="space-y-3">
             <SectionHeader 
               title={t('natureSoundscapes')} 
-              subtitle={t('natureSoundscapesSub')}
+              subtitle={t('natureSoundscapesSub')} 
               icon={Waves}
             />
-            <div className="grid grid-cols-2 gap-3.5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {natureSoundscapes.map(track => (
                 <ContentCard key={track.id} track={track} layout="card" onPlayList={natureSoundscapes} />
               ))}

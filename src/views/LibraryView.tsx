@@ -75,7 +75,7 @@ export const LibraryView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 pb-24 pt-3 px-4 max-w-md mx-auto animate-fade-in">
+    <div className="space-y-8 pb-32 pt-3 px-2 sm:px-4 max-w-md lg:max-w-6xl mx-auto animate-fade-in">
       {/* Title & Actions */}
       <div className="flex items-center justify-between">
         <div>
@@ -111,7 +111,7 @@ export const LibraryView: React.FC = () => {
             <button
               key={item.key}
               onClick={() => setActiveSection(item.key as any)}
-              className={`px-3 py-2 rounded-2xl text-xs font-medium whitespace-nowrap transition-all flex items-center space-x-1.5 border ${
+              className={`px-3.5 py-2 rounded-2xl text-xs font-medium whitespace-nowrap transition-all flex items-center space-x-1.5 border ${
                 isActive 
                   ? 'bg-gradient-to-r from-[#dfb76c] to-[#f3cf7a] text-[#0a0c16] font-semibold border-transparent shadow-gold-glow' 
                   : 'bg-[#121528] border-white/5 text-stone-400 hover:text-white'
@@ -147,7 +147,7 @@ export const LibraryView: React.FC = () => {
 
       {activeSection === 'playlists' && (
         <div className="space-y-3.5">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {playlists.map(pl => {
               const count = pl.trackIds.length;
               return (
@@ -170,7 +170,7 @@ export const LibraryView: React.FC = () => {
 
                   <div>
                     <h3 className="text-xs font-bold text-white truncate">{pl.title}</h3>
-                    <p className="text-[10px] text-stone-400 mt-0.5">{count} tracks • {pl.createdAt}</p>
+                    <p className="text-[10px] text-stone-400 mt-0.5">{count} 首曲目 • {pl.createdAt}</p>
                   </div>
                 </div>
               );
@@ -221,10 +221,10 @@ export const LibraryView: React.FC = () => {
                 <div
                   key={`${record.content_id}-${record.played_at}`}
                   onClick={() => playTrack(track, undefined, record.progress)}
-                  className="group p-3 rounded-2xl bg-[#0f1226]/80 hover:bg-[#161a35] border border-white/[0.04] hover:border-[#dfb76c]/30 transition-all cursor-pointer flex flex-col space-y-2.5"
+                  className="group p-3.5 rounded-2xl bg-[#0f1226]/80 hover:bg-[#161a35] border border-white/[0.04] hover:border-[#dfb76c]/30 transition-all cursor-pointer flex flex-col space-y-2.5"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3 min-w-0">
+                    <div className="flex items-center space-x-3.5 min-w-0">
                       <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 border border-white/5">
                         <img 
                           src={track.coverUrl} 
@@ -251,10 +251,10 @@ export const LibraryView: React.FC = () => {
                         e.stopPropagation();
                         playTrack(track, undefined, record.progress);
                       }}
-                      className="px-2.5 py-1 rounded-full bg-[#dfb76c]/15 text-[#dfb76c] hover:bg-[#dfb76c] hover:text-[#0a0c16] text-[10px] font-semibold transition-colors flex items-center space-x-1 flex-shrink-0"
+                      className="px-3 py-1 rounded-full bg-[#dfb76c]/15 text-[#dfb76c] hover:bg-[#dfb76c] hover:text-[#0a0c16] text-[10px] font-semibold transition-colors flex items-center space-x-1 flex-shrink-0"
                     >
                       <Play className="w-2.5 h-2.5 fill-current" />
-                      <span>Continue</span>
+                      <span>继续聆听</span>
                     </button>
                   </div>
 
@@ -278,8 +278,8 @@ export const LibraryView: React.FC = () => {
           ) : (
             <div className="text-center py-16 px-4 rounded-3xl bg-[#121528] border border-white/5 space-y-2">
               <History className="w-8 h-8 text-stone-600 mx-auto" />
-              <p className="text-sm font-semibold text-white">No recently played tracks</p>
-              <p className="text-xs text-stone-400">Your recent sound baths and meditation sessions will appear here.</p>
+              <p className="text-sm font-semibold text-white">暂无最近播放记录</p>
+              <p className="text-xs text-stone-400">您聆听的音乐与冥想练习将会记录在这里。</p>
             </div>
           )}
         </div>

@@ -84,7 +84,7 @@ export const ProfileView: React.FC = () => {
           highlight: true 
         },
         { 
-          label: language === 'zh' ? '我的身心灵日志 (Soul Journal)' : 'My Soul Journal', 
+          label: language === 'zh' ? '我的身心觉察日志' : 'My Soul Journal', 
           icon: BookOpen, 
           value: `${journalEntries.length} ${language === 'zh' ? '篇觉察' : 'entries'}`, 
           highlight: true,
@@ -182,30 +182,30 @@ export const ProfileView: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6 pb-28 pt-3 px-4 max-w-md mx-auto animate-fade-in relative">
+    <div className="space-y-8 pb-32 pt-3 px-2 sm:px-4 max-w-md lg:max-w-5xl mx-auto animate-fade-in relative">
       {/* Subtle Ambient Glow */}
       <div className="absolute -top-10 inset-x-0 h-64 pointer-events-none bg-gradient-to-b from-[#1b1c38]/30 to-transparent blur-3xl -z-10" />
 
       {/* Top Profile Card */}
-      <div className="relative p-5 rounded-3xl specular-card shadow-2xl text-center">
+      <div className="relative p-6 rounded-3xl specular-card shadow-2xl text-center">
         {/* Switch buttons to Mentor & Admin Portals */}
         <div className="absolute top-4 right-4 flex items-center space-x-1.5">
           <button
             onClick={() => setIsMentorView(true)}
-            className="p-1.5 px-2.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/25 text-purple-300 text-xs flex items-center space-x-1 transition-all active:scale-95"
-            title="Mentor Partner Portal"
+            className="p-1.5 px-3 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/25 text-purple-300 text-xs flex items-center space-x-1 transition-all active:scale-95"
+            title="导师工作台"
           >
             <Award className="w-3.5 h-3.5 text-purple-400" />
-            <span className="text-[10px] font-semibold">Mentor</span>
+            <span className="text-[10px] font-semibold">导师工作台</span>
           </button>
 
           <button
             onClick={() => setIsAdminView(true)}
-            className="p-1.5 px-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white text-xs flex items-center space-x-1 transition-all active:scale-95"
-            title="Admin Dashboard"
+            className="p-1.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white text-xs flex items-center space-x-1 transition-all active:scale-95"
+            title="管理后台"
           >
             <LayoutDashboard className="w-3.5 h-3.5 text-[#dfb76c]" />
-            <span className="text-[10px] font-semibold">Admin</span>
+            <span className="text-[10px] font-semibold">管理后台</span>
           </button>
         </div>
 
@@ -230,10 +230,10 @@ export const ProfileView: React.FC = () => {
         )}
 
         {/* Membership Badge */}
-        <div className="mt-3 inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#dfb76c]/15 border border-[#dfb76c]/30 text-[#dfb76c] text-xs font-semibold">
+        <div className="mt-3 inline-flex items-center space-x-1.5 px-3.5 py-1 rounded-full bg-[#dfb76c]/15 border border-[#dfb76c]/30 text-[#dfb76c] text-xs font-semibold">
           <Crown className="w-3.5 h-3.5 fill-current" />
-          <span className="uppercase tracking-wider">
-            {user.membershipStatus === 'free' ? t('freeMemberBadge') : `SoulFlow ${user.membershipStatus === 'premium' ? 'Pro' : 'VIP'}`}
+          <span className="tracking-wider">
+            {user.membershipStatus === 'free' ? t('freeMemberBadge') : (user.membershipStatus === 'premium' ? '圣殿 VIP 尊享会员' : 'VIP+ 大师会员')}
           </span>
         </div>
 
@@ -297,45 +297,47 @@ export const ProfileView: React.FC = () => {
         )}
       </div>
 
-      {/* Menu Sections */}
-      {menuSections.map((sec, idx) => (
-        <div key={idx} className="space-y-2">
-          <h3 className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider px-2">
-            {sec.title}
-          </h3>
+      {/* Menu Sections Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {menuSections.map((sec, idx) => (
+          <div key={idx} className="space-y-2">
+            <h3 className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider px-2">
+              {sec.title}
+            </h3>
 
-          <div className="rounded-2xl bg-[#121528] border border-white/5 divide-y divide-white/5 overflow-hidden">
-            {sec.items.map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={i}
-                  onClick={item.action}
-                  className="w-full p-3.5 flex items-center justify-between text-left hover:bg-white/5 transition-colors group"
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className={`p-1.5 rounded-xl ${item.highlight ? 'bg-[#dfb76c]/20 text-[#dfb76c]' : 'bg-white/5 text-stone-400 group-hover:text-stone-200'}`}>
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <span className="text-xs font-medium text-stone-200 group-hover:text-white">
-                      {item.label}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center space-x-1.5 text-xs text-stone-400">
-                    {item.value && (
-                      <span className={`text-[11px] font-medium ${item.highlight ? 'text-[#dfb76c] font-semibold' : ''}`}>
-                        {item.value}
+            <div className="rounded-2xl bg-[#121528] border border-white/5 divide-y divide-white/5 overflow-hidden">
+              {sec.items.map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={i}
+                    onClick={item.action}
+                    className="w-full p-3.5 flex items-center justify-between text-left hover:bg-white/5 transition-colors group"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className={`p-1.5 rounded-xl ${item.highlight ? 'bg-[#dfb76c]/20 text-[#dfb76c]' : 'bg-white/5 text-stone-400 group-hover:text-stone-200'}`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <span className="text-xs font-medium text-stone-200 group-hover:text-white">
+                        {item.label}
                       </span>
-                    )}
-                    <ChevronRight className="w-4 h-4 text-stone-500 group-hover:text-stone-300" />
-                  </div>
-                </button>
-              );
-            })}
+                    </div>
+
+                    <div className="flex items-center space-x-1.5 text-xs text-stone-400">
+                      {item.value && (
+                        <span className={`text-[11px] font-medium ${item.highlight ? 'text-[#dfb76c] font-semibold' : ''}`}>
+                          {item.value}
+                        </span>
+                      )}
+                      <ChevronRight className="w-4 h-4 text-stone-500 group-hover:text-stone-300" />
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       {/* Logout button */}
       <button

@@ -81,10 +81,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         origin: { y: 0.6 },
         colors: ['#dfb76c', '#a599e0', '#ffffff'],
       });
-      showToast(`Welcome to ${plan.name}! Your sanctuary is unlocked ✨`);
+      showToast(`恭喜加入 ${plan.name}！身心灵圣殿已为您全量解锁 ✨`);
       onClose();
     } catch (e: any) {
-      showToast(e?.message || 'Payment processing failed. Please try again.');
+      showToast(e?.message || '支付处理失败，请稍后重试');
     } finally {
       setIsProcessing(false);
     }

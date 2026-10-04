@@ -113,13 +113,13 @@ export const ProgramDetailModal: React.FC = () => {
           <div className="absolute top-4 left-4 flex items-center space-x-2">
             <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[#dfb76c] text-[10px] font-mono font-bold uppercase tracking-wider border border-[#dfb76c]/30 flex items-center space-x-1">
               <Calendar className="w-3 h-3" />
-              <span>{selectedProgram.totalDays} Days</span>
+              <span>{selectedProgram.totalDays} 天计划</span>
             </span>
 
             {isPremium && (
               <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[#dfb76c] text-[10px] font-bold border border-[#dfb76c]/40 flex items-center space-x-1">
                 <Crown className="w-3 h-3 fill-[#dfb76c]" />
-                <span>PREMIUM</span>
+                <span>圣殿专属</span>
               </span>
             )}
           </div>
@@ -127,7 +127,7 @@ export const ProgramDetailModal: React.FC = () => {
           {/* Hero Metadata Title */}
           <div className="absolute bottom-4 left-6 right-6">
             <span className="text-[11px] text-[#a599e0] font-semibold uppercase tracking-wider block">
-              {selectedProgram.difficulty} • {selectedProgram.totalDurationFormatted || `${selectedProgram.totalDays * 20} mins`}
+              {selectedProgram.difficulty} • {selectedProgram.totalDurationFormatted || `${selectedProgram.totalDays * 20} 分钟`}
             </span>
             <h1 className="text-2xl font-bold text-white tracking-tight mt-0.5 leading-snug">
               {selectedProgram.title}
@@ -157,14 +157,14 @@ export const ProgramDetailModal: React.FC = () => {
                 className="w-11 h-11 rounded-xl object-cover border border-[#dfb76c]/40" 
               />
               <div>
-                <span className="text-[10px] text-stone-400 uppercase tracking-wider block font-mono">Guide & Mentor</span>
+                <span className="text-[10px] text-stone-400 uppercase tracking-wider block font-mono">主讲导师</span>
                 <h4 className="text-xs font-bold text-white flex items-center space-x-1">
                   <span>{selectedProgram.mentorName}</span>
                   <Sparkles className="w-3 h-3 text-[#dfb76c]" />
                 </h4>
               </div>
             </div>
-            <span className="text-xs font-medium text-[#dfb76c]">View Profile →</span>
+            <span className="text-xs font-medium text-[#dfb76c]">查看导师主页 →</span>
           </div>
 
           {/* Primary CTA Button: Start or Continue */}
@@ -174,16 +174,16 @@ export const ProgramDetailModal: React.FC = () => {
               className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#dfb76c] via-[#ecd084] to-[#f3cf7a] text-[#0a0c16] font-bold text-sm shadow-gold-glow flex items-center justify-center space-x-2 active:scale-98 transition-transform"
             >
               <Play className="w-4 h-4 fill-current ml-0.5" />
-              <span>{isStarted ? `Continue Journey • Day ${currentDay}` : 'Start Journey'}</span>
+              <span>{isStarted ? `继续蜕变旅程 • 第 ${currentDay} 天` : '开始蜕变旅程'}</span>
             </button>
           </div>
 
           {/* User Progress Overview */}
           <div className="p-4 rounded-2xl bg-[#13162e] border border-white/5 space-y-2.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-stone-300 font-medium">Your Progress</span>
+              <span className="text-stone-300 font-medium">修习进度</span>
               <span className="text-[#dfb76c] font-bold font-mono">
-                {progressPct}% ({completedDays.length}/{selectedProgram.totalDays} Days Completed)
+                {progressPct}% (已完成 {completedDays.length}/{selectedProgram.totalDays} 天)
               </span>
             </div>
             <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
@@ -193,15 +193,15 @@ export const ProgramDetailModal: React.FC = () => {
               />
             </div>
             <div className="flex items-center justify-between text-[11px] text-stone-400 font-light pt-0.5">
-              <span>Current: Day {currentDay} of {selectedProgram.totalDays}</span>
-              <span>{selectedProgram.totalDays - completedDays.length} Days Remaining</span>
+              <span>当前：第 {currentDay} 天 / 共 {selectedProgram.totalDays} 天</span>
+              <span>剩余 {selectedProgram.totalDays - completedDays.length} 天</span>
             </div>
           </div>
 
           {/* Program Description */}
           <div className="space-y-1.5">
             <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider font-mono">
-              About This Protocol
+              关于本期身心疗愈方案
             </h3>
             <p className="text-xs text-stone-300 font-light leading-relaxed">
               {selectedProgram.description}
@@ -212,10 +212,10 @@ export const ProgramDetailModal: React.FC = () => {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider font-mono">
-                Daily Curriculum ({selectedProgram.totalDays} Days)
+                每日系统课表 (共 {selectedProgram.totalDays} 天)
               </h3>
               {isPremium && isUserFree && (
-                <span className="text-[10px] text-[#dfb76c] font-medium">Day 1 Free Preview</span>
+                <span className="text-[10px] text-[#dfb76c] font-medium">首日免费体验</span>
               )}
             </div>
 
@@ -247,7 +247,7 @@ export const ProgramDetailModal: React.FC = () => {
                               ? 'bg-black/40 text-stone-500 border border-white/5'
                               : 'bg-[#dfb76c]/15 text-[#dfb76c] border border-[#dfb76c]/30'
                         }`}>
-                          {isCompleted ? <Check className="w-4 h-4" /> : `D${dayNum}`}
+                          {isCompleted ? <Check className="w-4 h-4" /> : `第${dayNum}天`}
                         </div>
 
                         <div className="min-w-0">
@@ -278,22 +278,22 @@ export const ProgramDetailModal: React.FC = () => {
                     <div className="mt-2.5 pt-2 border-t border-white/[0.04] flex items-center space-x-3 text-[10px] text-stone-400">
                       <span className="flex items-center space-x-1">
                         <Wind className="w-3 h-3 text-[#dfb76c]" />
-                        <span>Breathing</span>
+                        <span>呼吸调息</span>
                       </span>
                       <span>•</span>
                       <span className="flex items-center space-x-1">
                         <Sparkles className="w-3 h-3 text-[#a599e0]" />
-                        <span>Meditation</span>
+                        <span>正念冥想</span>
                       </span>
                       <span>•</span>
                       <span className="flex items-center space-x-1">
                         <Music className="w-3 h-3 text-[#dfb76c]" />
-                        <span>Sound Bath</span>
+                        <span>疗愈声波浴</span>
                       </span>
                       <span>•</span>
                       <span className="flex items-center space-x-1">
                         <BookOpen className="w-3 h-3 text-stone-400" />
-                        <span>Reflection</span>
+                        <span>觉察日志</span>
                       </span>
                     </div>
                   </div>

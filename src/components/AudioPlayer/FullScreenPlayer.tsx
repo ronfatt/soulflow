@@ -360,8 +360,8 @@ export const FullScreenPlayer: React.FC = () => {
               className={`p-2.5 rounded-full transition-colors ${
                 shuffleMode ? 'text-[#dfb76c] bg-[#dfb76c]/15' : 'text-stone-400 hover:text-white'
               }`}
-              title={shuffleMode ? 'Shuffle active' : 'Shuffle off'}
-              aria-label="Shuffle"
+              title={shuffleMode ? '随机播放开启' : '随机播放关闭'}
+              aria-label="随机播放"
             >
               <Shuffle className="w-4 h-4" />
             </button>
@@ -369,7 +369,7 @@ export const FullScreenPlayer: React.FC = () => {
             <button
               onClick={prevTrack}
               className="p-3 text-stone-300 hover:text-white active:scale-90 transition-transform"
-              aria-label="Previous"
+              aria-label="上一首"
             >
               <SkipBack className="w-6 h-6 fill-current" />
             </button>
@@ -378,7 +378,7 @@ export const FullScreenPlayer: React.FC = () => {
             <button
               onClick={togglePlay}
               className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#dfb76c] to-[#f3cf7a] text-[#0a0c16] flex items-center justify-center shadow-gold-glow hover:scale-105 active:scale-95 transition-transform"
-              aria-label={isPlaying ? 'Pause' : 'Play'}
+              aria-label={isPlaying ? '暂停' : '播放'}
             >
               {isPlaying ? (
                 <Pause className="w-7 h-7 fill-current" />
@@ -390,7 +390,7 @@ export const FullScreenPlayer: React.FC = () => {
             <button
               onClick={nextTrack}
               className="p-3 text-stone-300 hover:text-white active:scale-90 transition-transform"
-              aria-label="Next"
+              aria-label="下一首"
             >
               <SkipForward className="w-6 h-6 fill-current" />
             </button>
@@ -400,8 +400,8 @@ export const FullScreenPlayer: React.FC = () => {
               className={`p-2.5 rounded-full transition-colors ${
                 repeatMode !== 'off' ? 'text-[#dfb76c] bg-[#dfb76c]/15' : 'text-stone-400 hover:text-white'
               }`}
-              title={`Repeat: ${repeatMode}`}
-              aria-label="Repeat"
+              title={repeatMode === 'one' ? '单曲循环' : (repeatMode === 'all' ? '列表循环' : '循环关闭')}
+              aria-label="循环模式"
             >
               {repeatMode === 'one' ? <Repeat1 className="w-4 h-4" /> : <Repeat className="w-4 h-4" />}
             </button>
@@ -426,7 +426,7 @@ export const FullScreenPlayer: React.FC = () => {
                 <Waves className="w-5 h-5" />
                 <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-[#dfb76c] animate-pulse" />
               </div>
-              <span className="text-[10px]">{language === 'zh' ? '自然伴音' : 'Ambience'}</span>
+              <span className="text-[10px]">自然伴音</span>
             </button>
 
             <button
@@ -437,7 +437,7 @@ export const FullScreenPlayer: React.FC = () => {
             >
               <Moon className="w-5 h-5" />
               <span className="text-[10px]">
-                {sleepTimerRemaining ? `${Math.ceil(sleepTimerRemaining / 60)}m` : (language === 'zh' ? '定时' : 'Timer')}
+                {sleepTimerRemaining ? `${Math.ceil(sleepTimerRemaining / 60)}分钟` : '定时'}
               </span>
             </button>
 

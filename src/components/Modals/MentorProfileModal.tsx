@@ -54,21 +54,29 @@ export const MentorProfileModal: React.FC = () => {
   const handleCopyCode = () => {
     navigator.clipboard.writeText(selectedMentor.referralCode);
     setCopiedCode(true);
-    showToast(`Referral code ${selectedMentor.referralCode} copied to clipboard!`);
+    showToast(`导师专属邀请码 ${selectedMentor.referralCode} 已复制到剪贴板！`);
     setTimeout(() => setCopiedCode(false), 3000);
   };
 
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: `${selectedMentor.name} on SoulFlow`,
-        text: `Join me on SoulFlow with ${selectedMentor.name}. Use invite code ${selectedMentor.referralCode} for 7 days free!`,
+        title: `${selectedMentor.name} 导师主页`,
+        text: `邀你加入 SoulFlow 与 ${selectedMentor.name} 导师一同修习。使用邀请码 ${selectedMentor.referralCode} 即可尊享 7 天免费会员！`,
         url: referralLink,
       }).catch(() => {});
     } else {
       navigator.clipboard.writeText(referralLink);
-      showToast(`Invite link copied: ${referralLink}`);
+      showToast(`专属邀请链接已复制：${referralLink}`);
     }
+  };
+
+  const tabLabels: Record<'about' | 'music' | 'meditations' | 'programs' | 'courses', string> = {
+    about: '导师简介',
+    music: '疗愈音乐',
+    meditations: '正念冥想',
+    programs: '系统计划',
+    courses: '大师课'
   };
 
   return (
@@ -131,13 +139,13 @@ export const MentorProfileModal: React.FC = () => {
                 }`}
               >
                 {isFollowing ? <Check className="w-3.5 h-3.5" /> : <UserPlus className="w-3.5 h-3.5" />}
-                <span>{isFollowing ? 'Following' : 'Follow'}</span>
+                <span>{isFollowing ? '已关注' : '关注导师'}</span>
               </button>
 
               <button
                 onClick={handleShare}
                 className="p-2.5 rounded-full bg-white/10 hover:bg-white/15 text-stone-300 transition-colors"
-                title="Share mentor invite link"
+                title="分享导师邀请链接"
               >
                 <Share2 className="w-4 h-4" />
               </button>
@@ -150,25 +158,25 @@ export const MentorProfileModal: React.FC = () => {
               <div className="text-sm font-bold text-white font-mono">
                 {(selectedMentor.followersCount / 1000).toFixed(1)}k
               </div>
-              <span className="text-[9px] text-stone-400 uppercase tracking-wider block">Followers</span>
+              <span className="text-[9px] text-stone-400 tracking-wider block">关注者</span>
             </div>
             <div className="border-l border-white/5">
               <div className="text-sm font-bold text-white font-mono">
                 {(selectedMentor.studentsCount / 1000).toFixed(1)}k
               </div>
-              <span className="text-[9px] text-stone-400 uppercase tracking-wider block">Students</span>
+              <span className="text-[9px] text-stone-400 tracking-wider block">修习学员</span>
             </div>
             <div className="border-l border-white/5">
               <div className="text-sm font-bold text-[#dfb76c] font-mono">
                 {mentorPrograms.length || 1}
               </div>
-              <span className="text-[9px] text-stone-400 uppercase tracking-wider block">Programs</span>
+              <span className="text-[9px] text-stone-400 tracking-wider block">系统计划</span>
             </div>
             <div className="border-l border-white/5">
               <div className="text-sm font-bold text-[#a599e0] font-mono">
                 {mentorCoursesList.length || 1}
               </div>
-              <span className="text-[9px] text-stone-400 uppercase tracking-wider block">Courses</span>
+              <span className="text-[9px] text-stone-400 tracking-wider block">大师课程</span>
             </div>
           </div>
 
@@ -176,8 +184,8 @@ export const MentorProfileModal: React.FC = () => {
           <div className="p-4 rounded-2xl bg-gradient-to-r from-[#211d3d] via-[#1a1c35] to-[#1a233b] border border-[#dfb76c]/30 space-y-2.5">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#dfb76c] font-mono block">
-                  Mentor Referral Code
+                <span className="text-[10px] font-bold tracking-wider text-[#dfb76c] font-mono block">
+                  导师专属邀请码
                 </span>
                 <span className="text-base font-bold text-white font-mono tracking-wider">
                   {selectedMentor.referralCode}
@@ -190,7 +198,7 @@ export const MentorProfileModal: React.FC = () => {
                   className="px-3 py-1.5 rounded-xl bg-[#dfb76c]/20 hover:bg-[#dfb76c]/30 border border-[#dfb76c]/40 text-[#dfb76c] text-xs font-semibold flex items-center space-x-1"
                 >
                   {copiedCode ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copiedCode ? 'Copied' : 'Copy Code'}</span>
+                  <span>{copiedCode ? '已复制' : '复制邀请码'}</span>
                 </button>
 
                 <button
@@ -198,13 +206,13 @@ export const MentorProfileModal: React.FC = () => {
                   className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-stone-200 text-xs font-semibold flex items-center space-x-1"
                 >
                   <Share2 className="w-3.5 h-3.5" />
-                  <span>Share Mentor</span>
+                  <span>分享导师</span>
                 </button>
               </div>
             </div>
 
             <p className="text-[11px] text-stone-300 font-light leading-relaxed">
-              Invite friends with <span className="font-mono text-white font-medium">{referralLink}</span>. Your referral automatically unlocks 7 days of free SoulFlow Premium.
+              邀请朋友使用邀请码注册，好友可自动解锁 7 天免费圣殿 VIP 会员。
             </p>
           </div>
 
@@ -214,13 +222,13 @@ export const MentorProfileModal: React.FC = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-medium capitalize transition-colors flex-shrink-0 ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors flex-shrink-0 ${
                   activeTab === tab
                     ? 'bg-[#dfb76c]/15 text-[#dfb76c] font-semibold border border-[#dfb76c]/30'
                     : 'text-stone-400 hover:text-white'
                 }`}
               >
-                {tab}
+                {tabLabels[tab]}
               </button>
             ))}
           </div>
@@ -230,8 +238,8 @@ export const MentorProfileModal: React.FC = () => {
             <div className="space-y-4 text-xs text-stone-300 leading-relaxed">
               {/* Biography */}
               <div className="space-y-1">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400 font-mono">
-                  Biography & Approach
+                <h4 className="text-xs font-bold tracking-wider text-stone-400 font-mono">
+                  导师生平与疗愈理念
                 </h4>
                 <p className="text-stone-300 leading-relaxed font-light">
                   {selectedMentor.bio}
@@ -243,27 +251,27 @@ export const MentorProfileModal: React.FC = () => {
                 <div className="p-3 rounded-xl bg-[#141830] border border-white/5 space-y-1">
                   <div className="flex items-center space-x-1.5 text-stone-400">
                     <Clock className="w-3.5 h-3.5 text-[#dfb76c]" />
-                    <span className="text-[10px] uppercase font-mono">Experience</span>
+                    <span className="text-[10px] uppercase font-mono">从业资历</span>
                   </div>
                   <span className="text-xs font-bold text-white block">
-                    {selectedMentor.experience_years || 12} Years Clinical & Practice
+                    {selectedMentor.experience_years || 12} 年临床与身心修习经验
                   </span>
                 </div>
 
                 <div className="p-3 rounded-xl bg-[#141830] border border-white/5 space-y-1">
                   <div className="flex items-center space-x-1.5 text-stone-400">
                     <Globe className="w-3.5 h-3.5 text-[#dfb76c]" />
-                    <span className="text-[10px] uppercase font-mono">Languages</span>
+                    <span className="text-[10px] uppercase font-mono">修习语言</span>
                   </div>
                   <span className="text-xs font-bold text-white block">
-                    {(selectedMentor.languages || ['English']).join(', ')}
+                    {(selectedMentor.languages || ['中文', '英文']).join('、')}
                   </span>
                 </div>
               </div>
 
               {/* Specialization */}
               <div className="p-3.5 rounded-2xl bg-[#141830] border border-white/5 space-y-1">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-stone-400">Core Specialization</span>
+                <span className="text-[10px] font-mono tracking-wider text-stone-400">核心专注领域</span>
                 <p className="text-xs font-semibold text-white">
                   {selectedMentor.specialization}
                 </p>
@@ -271,14 +279,14 @@ export const MentorProfileModal: React.FC = () => {
 
               {/* Certifications & Credentials */}
               <div className="space-y-2">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400 font-mono">
-                  Certifications & Qualifications
+                <h4 className="text-xs font-bold tracking-wider text-stone-400 font-mono">
+                  专业资质与国际认证
                 </h4>
                 <div className="space-y-1.5">
                   {(selectedMentor.certifications || [
-                    'Certified Contemplative Practitioner',
-                    'Integrative Sound Healing Master',
-                    'Mindfulness-Based Stress Reduction Facilitator'
+                    '国际声波能量疗愈师认证',
+                    '资深正念冥想导师资格',
+                    '身心整合减压（MBSR）导师'
                   ]).map((cert, i) => (
                     <div key={i} className="flex items-center space-x-2 text-stone-300 text-[11px]">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
@@ -298,7 +306,7 @@ export const MentorProfileModal: React.FC = () => {
                 ))
               ) : (
                 <div className="space-y-2">
-                  <p className="text-xs text-stone-400 py-3 text-center">Featured Healing Music:</p>
+                  <p className="text-xs text-stone-400 py-3 text-center">精选疗愈音乐：</p>
                   {tracks.slice(0, 2).map(track => (
                     <ContentCard key={track.id} track={track} layout="row" onPlayList={tracks} />
                   ))}
@@ -315,7 +323,7 @@ export const MentorProfileModal: React.FC = () => {
                 ))
               ) : (
                 <div className="space-y-2">
-                  <p className="text-xs text-stone-400 py-3 text-center">Featured Meditations:</p>
+                  <p className="text-xs text-stone-400 py-3 text-center">精选正念冥想：</p>
                   {tracks.slice(2, 4).map(track => (
                     <ContentCard key={track.id} track={track} layout="row" onPlayList={tracks} />
                   ))}
@@ -344,10 +352,10 @@ export const MentorProfileModal: React.FC = () => {
                       />
                       <div className="min-w-0">
                         <h4 className="text-xs font-semibold text-white truncate">{prog.title}</h4>
-                        <p className="text-[11px] text-stone-400 truncate">{prog.totalDays} Days • {prog.difficulty}</p>
+                        <p className="text-[11px] text-stone-400 truncate">{prog.totalDays} 天计划 • {prog.difficulty}</p>
                       </div>
                     </div>
-                    <span className="text-xs text-[#dfb76c] font-semibold flex-shrink-0">View →</span>
+                    <span className="text-xs text-[#dfb76c] font-semibold flex-shrink-0">查看详情 →</span>
                   </div>
                 ))
               ) : (
@@ -362,10 +370,10 @@ export const MentorProfileModal: React.FC = () => {
                     <img src={programs[0].coverUrl} alt="Program" className="w-12 h-12 rounded-xl object-cover" />
                     <div>
                       <h4 className="text-xs font-semibold text-white">{programs[0].title}</h4>
-                      <p className="text-[11px] text-stone-400">{programs[0].totalDays} Days • Featured Sanctuary Series</p>
+                      <p className="text-[11px] text-stone-400">{programs[0].totalDays} 天计划 • 圣殿特推系统修习方案</p>
                     </div>
                   </div>
-                  <span className="text-xs text-[#dfb76c] font-semibold">View →</span>
+                  <span className="text-xs text-[#dfb76c] font-semibold">查看详情 →</span>
                 </div>
               )}
             </div>
@@ -393,12 +401,12 @@ export const MentorProfileModal: React.FC = () => {
                         <h4 className="text-xs font-bold text-white truncate">{course.title}</h4>
                         <p className="text-[11px] text-stone-400 mt-0.5 line-clamp-1">{course.description}</p>
                         <span className="text-[10px] text-[#a599e0] font-medium block mt-1">
-                          {course.totalLessons} Lessons • {course.durationHours} Hours
+                          共 {course.totalLessons} 节课 • {course.durationHours} 小时
                         </span>
                       </div>
                     </div>
                     <button className="px-3 py-1.5 rounded-xl bg-white/10 text-xs font-medium text-white flex-shrink-0">
-                      View
+                      查看详情
                     </button>
                   </div>
                 ))
@@ -415,11 +423,11 @@ export const MentorProfileModal: React.FC = () => {
                     <div>
                       <h4 className="text-xs font-bold text-white">{courses[0].title}</h4>
                       <p className="text-[11px] text-stone-400 mt-0.5 line-clamp-1">{courses[0].description}</p>
-                      <span className="text-[10px] text-[#a599e0] font-medium block mt-1">Masterclass Foundation</span>
+                      <span className="text-[10px] text-[#a599e0] font-medium block mt-1">大师课基础研习</span>
                     </div>
                   </div>
                   <button className="px-3 py-1.5 rounded-xl bg-white/10 text-xs font-medium text-white flex-shrink-0">
-                    View
+                    查看详情
                   </button>
                 </div>
               )}

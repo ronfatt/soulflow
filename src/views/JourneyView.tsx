@@ -58,7 +58,7 @@ export const JourneyView: React.FC = () => {
         key={program.id}
         onClick={() => openProgramDetail(program)}
         className={`group relative rounded-[28px] overflow-hidden specular-card hover:border-[#dfb76c]/40 transition-all duration-300 cursor-pointer shadow-xl active:scale-[0.985] ${
-          isHero ? 'w-full' : 'flex-shrink-0 w-72'
+          isHero ? 'w-full' : 'flex-shrink-0 w-72 lg:w-auto'
         }`}
       >
         {/* Cover Image */}
@@ -152,7 +152,7 @@ export const JourneyView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-7 pb-24 pt-3 px-4 max-w-md mx-auto animate-fade-in select-none relative">
+    <div className="space-y-8 pb-32 pt-3 px-2 sm:px-4 max-w-md lg:max-w-6xl mx-auto animate-fade-in select-none relative">
       {/* Subtle Ambient Glow Orb */}
       <div className="absolute -top-10 inset-x-0 h-72 pointer-events-none bg-gradient-to-b from-[#18233e]/30 via-[#101429]/10 to-transparent blur-3xl -z-10" />
 
@@ -171,7 +171,7 @@ export const JourneyView: React.FC = () => {
       </div>
 
       {/* Subtle Streak Card */}
-      <div className="p-4 rounded-3xl specular-card flex items-center justify-between shadow-xl">
+      <div className="p-4 sm:p-5 rounded-3xl specular-card flex items-center justify-between shadow-xl">
         <div className="flex items-center space-x-3.5">
           <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#dfb76c]/20 to-[#a599e0]/20 border border-[#dfb76c]/30 flex items-center justify-center text-[#dfb76c] shadow-gold-glow">
             <Flame className="w-5 h-5 fill-current" />
@@ -203,7 +203,7 @@ export const JourneyView: React.FC = () => {
             onClick={() => {
               openDailySession(activeProgram, activeProgress.current_day);
             }}
-            className="group relative p-4 rounded-3xl bg-gradient-to-r from-[#181d3d] via-[#13172e] to-[#0d1022] border border-[#dfb76c]/30 hover:border-[#dfb76c]/60 transition-all cursor-pointer shadow-xl active:scale-[0.98]"
+            className="group relative p-5 rounded-3xl bg-gradient-to-r from-[#181d3d] via-[#13172e] to-[#0d1022] border border-[#dfb76c]/30 hover:border-[#dfb76c]/60 transition-all cursor-pointer shadow-xl active:scale-[0.98]"
           >
             <div className="flex items-center space-x-4">
               <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 shadow-lg border border-white/10">
@@ -228,7 +228,7 @@ export const JourneyView: React.FC = () => {
                   </span>
                 </div>
 
-                <h3 className="text-sm font-bold text-white truncate mt-0.5">
+                <h3 className="text-sm sm:text-base font-bold text-white truncate mt-0.5">
                   {activeProgram.title}
                 </h3>
                 <p className="text-xs text-stone-300 truncate font-light">
@@ -236,7 +236,7 @@ export const JourneyView: React.FC = () => {
                 </p>
 
                 {/* Progress bar line */}
-                <div className="mt-2 flex items-center space-x-2">
+                <div className="mt-2.5 flex items-center space-x-2">
                   <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-gradient-to-r from-[#a599e0] via-[#dfb76c] to-[#f3cf7a] rounded-full" 
@@ -258,7 +258,7 @@ export const JourneyView: React.FC = () => {
           subtitle={t('recommendedSub')}
           icon={Sparkles}
         />
-        <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+        <div className="flex lg:grid lg:grid-cols-3 lg:space-x-0 lg:gap-4 space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-2 sm:-mx-4 lg:mx-0 px-2 sm:px-4 lg:px-0">
           {recommendedPrograms.map(p => renderJourneyCard(p))}
         </div>
       </div>
@@ -270,7 +270,7 @@ export const JourneyView: React.FC = () => {
           subtitle={t('sleepProgramsSub')}
           icon={Moon}
         />
-        <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+        <div className="flex lg:grid lg:grid-cols-3 lg:space-x-0 lg:gap-4 space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-2 sm:-mx-4 lg:mx-0 px-2 sm:px-4 lg:px-0">
           {sleepPrograms.map(p => renderJourneyCard(p))}
         </div>
       </div>
@@ -282,7 +282,7 @@ export const JourneyView: React.FC = () => {
           subtitle={t('stressProgramsSub')}
           icon={Wind}
         />
-        <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+        <div className="flex lg:grid lg:grid-cols-3 lg:space-x-0 lg:gap-4 space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-2 sm:-mx-4 lg:mx-0 px-2 sm:px-4 lg:px-0">
           {stressPrograms.map(p => renderJourneyCard(p))}
         </div>
       </div>
@@ -294,7 +294,7 @@ export const JourneyView: React.FC = () => {
           subtitle={t('emotionalProgramsSub')}
           icon={Heart}
         />
-        <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+        <div className="flex lg:grid lg:grid-cols-3 lg:space-x-0 lg:gap-4 space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-2 sm:-mx-4 lg:mx-0 px-2 sm:px-4 lg:px-0">
           {emotionalPrograms.map(p => renderJourneyCard(p))}
         </div>
       </div>
@@ -306,7 +306,7 @@ export const JourneyView: React.FC = () => {
           subtitle={t('focusProgramsSub')}
           icon={Compass}
         />
-        <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+        <div className="flex lg:grid lg:grid-cols-3 lg:space-x-0 lg:gap-4 space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-2 sm:-mx-4 lg:mx-0 px-2 sm:px-4 lg:px-0">
           {focusPrograms.map(p => renderJourneyCard(p))}
         </div>
       </div>
@@ -318,7 +318,7 @@ export const JourneyView: React.FC = () => {
           subtitle={t('spiritualProgramsSub')}
           icon={Sun}
         />
-        <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+        <div className="flex lg:grid lg:grid-cols-3 lg:space-x-0 lg:gap-4 space-x-3.5 overflow-x-auto no-scrollbar pb-1 -mx-2 sm:-mx-4 lg:mx-0 px-2 sm:px-4 lg:px-0">
           {spiritualPrograms.map(p => renderJourneyCard(p))}
         </div>
       </div>

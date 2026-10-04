@@ -194,9 +194,9 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
             <div className="flex items-center justify-between text-xs">
               <span className="text-stone-300 flex items-center space-x-1.5 font-medium">
                 <Gift className="w-3.5 h-3.5 text-[#dfb76c]" />
-                <span>Mentor Referral Code</span>
+                <span>导师专属邀请码</span>
               </span>
-              <span className="text-[11px] text-[#a599e0]">Try "MAYA888" or "ALICE888"</span>
+              <span className="text-[11px] text-[#a599e0]">可输入 "MAYA888" 或 "ALICE888"</span>
             </div>
 
             <div className="flex items-center space-x-2">
@@ -204,14 +204,14 @@ export const MembershipModal: React.FC<MembershipModalProps> = ({ onOpenCheckout
                 type="text"
                 value={referralInput}
                 onChange={(e) => setReferralInput(e.target.value.toUpperCase())}
-                placeholder="e.g. MAYA888"
+                placeholder="例如 MAYA888"
                 className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 font-mono tracking-wider focus:outline-none focus:border-[#dfb76c]"
               />
               <button
                 onClick={handleApplyReferral}
                 className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-medium text-[#dfb76c] transition-colors flex items-center space-x-1"
               >
-                <span>Apply</span>
+                <span>兑换</span>
                 <ArrowRight className="w-3 h-3" />
               </button>
             </div>

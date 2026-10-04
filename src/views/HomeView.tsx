@@ -147,7 +147,7 @@ export const HomeView: React.FC = () => {
   }, [tracks]);
 
   return (
-    <div className="space-y-7 pb-24 pt-3 px-4 max-w-md mx-auto animate-fade-in select-none relative">
+    <div className="space-y-8 pb-32 pt-3 px-2 sm:px-4 max-w-md lg:max-w-6xl mx-auto animate-fade-in select-none relative">
       {/* Subtle Ambient Glow Orb */}
       <div className="absolute -top-10 inset-x-0 h-72 pointer-events-none bg-gradient-to-b from-[#241a3e]/30 via-[#18112c]/10 to-transparent blur-3xl -z-10" />
 
@@ -156,24 +156,24 @@ export const HomeView: React.FC = () => {
         <div>
           <div className="flex items-center space-x-1.5 text-xs text-[#a599e0] font-medium tracking-wide">
             <Sparkles className="w-3.5 h-3.5 text-[#dfb76c]" />
-            <span>{getGreeting()}, {user.name.split(' ')[0]}</span>
+            <span>{getGreeting()}, {user.name}</span>
           </div>
           <h1 className="font-serif text-[26px] font-medium tracking-tight text-white/95 mt-0.5">
-            SoulFlow
+            SOULFLOW 心流
           </h1>
         </div>
 
         {/* Membership Status Badge Button */}
         <button
           onClick={() => setShowMembershipModal(true)}
-          className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all active:scale-95 ${
+          className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full border text-xs font-semibold transition-all active:scale-95 ${
             user.membershipStatus === 'free'
               ? 'bg-[#dfb76c]/15 border-[#dfb76c]/40 text-[#dfb76c] hover:bg-[#dfb76c]/25 shadow-gold-glow'
               : 'bg-white/[0.08] border-white/[0.15] text-white hover:bg-white/[0.12]'
           }`}
         >
           <Crown className="w-3.5 h-3.5 fill-current" />
-          <span className="capitalize font-mono text-[11px]">{user.membershipStatus === 'free' ? 'Upgrade' : user.membershipStatus}</span>
+          <span>{user.membershipStatus === 'free' ? '升级尊享 VIP' : (user.membershipStatus === 'premium' ? '圣殿会员' : 'VIP+ 大师')}</span>
         </button>
       </div>
 
@@ -297,7 +297,7 @@ export const HomeView: React.FC = () => {
                     }}
                     className="text-[10px] text-[#dfb76c] font-semibold hover:underline"
                   >
-                    Day {activeJourneyProg.current_day} →
+                    第 {activeJourneyProg.current_day} 天 →
                   </button>
                 </div>
               </div>
@@ -317,7 +317,7 @@ export const HomeView: React.FC = () => {
 
           <div 
             onClick={() => playTrack(continueTrack, undefined, continueProgressSec)}
-            className="group relative p-3.5 rounded-3xl specular-card hover:border-[#dfb76c]/40 transition-all duration-300 cursor-pointer shadow-xl active:scale-[0.985]"
+            className="group relative p-4 rounded-3xl specular-card hover:border-[#dfb76c]/40 transition-all duration-300 cursor-pointer shadow-xl active:scale-[0.985]"
           >
             <div className="flex items-center space-x-3.5">
               <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 shadow-lg border border-white/5">
@@ -376,10 +376,10 @@ export const HomeView: React.FC = () => {
           onAction={() => setActiveTab('explore')}
         />
 
-        {/* Horizontal scroll cards */}
-        <div className="flex space-x-3.5 overflow-x-auto no-scrollbar pb-1 pt-0.5 -mx-4 px-4">
+        {/* Responsive grid / scroll cards */}
+        <div className="flex lg:grid lg:grid-cols-4 lg:space-x-0 lg:gap-4 space-x-3.5 overflow-x-auto no-scrollbar pb-1 pt-0.5 -mx-2 sm:-mx-4 lg:mx-0 px-2 sm:px-4 lg:px-0">
           {recommendedTracks.map(track => (
-            <div key={track.id} className="w-48 flex-shrink-0">
+            <div key={track.id} className="w-48 lg:w-auto flex-shrink-0">
               <ContentCard track={track} layout="card" onPlayList={recommendedTracks} />
             </div>
           ))}
@@ -387,7 +387,7 @@ export const HomeView: React.FC = () => {
       </div>
 
       {/* SECTION C: BASED ON YOUR MOOD (Dynamic) */}
-      <div className="space-y-3 p-4 rounded-[30px] specular-card shadow-xl">
+      <div className="space-y-3 p-4 sm:p-6 rounded-[30px] specular-card shadow-xl">
         <SectionHeader 
           title={t('basedOnMood')} 
           subtitle={t('basedOnMoodSub', { mood: selectedMood })}
@@ -395,7 +395,7 @@ export const HomeView: React.FC = () => {
         />
 
         {/* 4 Mood-curated practices */}
-        <div className="grid grid-cols-2 gap-3 pt-1">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-1">
           {moodCurations.map((item, idx) => (
             <div key={idx} className="space-y-1">
               <span className="text-[10px] font-mono text-[#dfb76c] uppercase tracking-wider block px-1 truncate">
@@ -416,7 +416,7 @@ export const HomeView: React.FC = () => {
           onAction={() => setActiveTab('journey')}
         />
 
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {featuredPrograms.map(prog => (
             <div 
               key={prog.id}
@@ -514,7 +514,7 @@ export const HomeView: React.FC = () => {
           onAction={() => setActiveTab('explore')}
         />
 
-        <div className="grid grid-cols-2 gap-3.5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {newThisWeek.map(track => (
             <ContentCard 
               key={track.id} 

@@ -54,10 +54,20 @@ export const PersonalizationInfoModal: React.FC<PersonalizationInfoModalProps> =
     setActiveAdapterType(type);
     if (type === 'ai') {
       personalizationEngine.setAdapter(new AIRecommendationModelAdapter());
-      showToast('Switched to SoulFlow Deep Resonance Neural Ranker (AI Adapter)');
+      showToast('已切换至 SoulFlow 神经共鸣排序内核（AI 适配器）');
     } else {
       personalizationEngine.setAdapter(new RuleBasedRecommendationAdapter());
-      showToast('Switched to SoulFlow Heuristic Engine (Rule-Based)');
+      showToast('已切换至 SoulFlow 身心启发式法则引擎（规则模式）');
+    }
+  };
+
+  const getTimeOfDayChinese = (timeOfDay: string) => {
+    switch (timeOfDay) {
+      case 'morning': return '清晨唤醒';
+      case 'afternoon': return '午后专注';
+      case 'evening': return '日暮舒缓';
+      case 'night': return '深夜助眠';
+      default: return '身心平衡';
     }
   };
 
@@ -78,13 +88,13 @@ export const PersonalizationInfoModal: React.FC<PersonalizationInfoModalProps> =
             </div>
             <div>
               <h3 className="text-sm font-bold text-white tracking-tight flex items-center space-x-1.5">
-                <span>Personalization Engine</span>
+                <span>身心自适应推荐引擎</span>
                 <span className="px-2 py-0.2 rounded-full bg-[#dfb76c]/15 text-[#dfb76c] text-[10px] font-mono border border-[#dfb76c]/30">
-                  AI-Ready v1.2
+                  AI 内核 v1.2
                 </span>
               </h3>
               <p className="text-[11px] text-stone-400 font-light">
-                Lightweight, signal-based recommendation architecture
+                轻量级多维身心信号感知与自适应调频架构
               </p>
             </div>
           </div>
@@ -99,74 +109,74 @@ export const PersonalizationInfoModal: React.FC<PersonalizationInfoModalProps> =
 
         {/* 7 Recommendation Signals Live Ingestion */}
         <div className="space-y-2.5">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#dfb76c]">
-            Active Recommendation Signals (7)
+          <span className="text-[10px] font-mono font-bold tracking-wider text-[#dfb76c]">
+            实时身心感知特征信号（共 7 项）
           </span>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
             {/* 1. Goals */}
             <div className="p-3 rounded-2xl bg-[#141830] border border-white/5 space-y-1">
-              <div className="flex items-center space-x-1 text-stone-400 text-[10px] uppercase font-mono">
+              <div className="flex items-center space-x-1 text-stone-400 text-[10px] font-mono">
                 <Target className="w-3 h-3 text-[#dfb76c]" />
-                <span>1. Selected Goals</span>
+                <span>1. 修习疗愈目标</span>
               </div>
               <p className="text-stone-200 font-medium text-[11px] truncate">
-                {signals.wellnessGoals.join(', ')}
+                {signals.wellnessGoals.join('、') || '深度助眠、情绪减压'}
               </p>
             </div>
 
             {/* 2. Mood */}
             <div className="p-3 rounded-2xl bg-[#141830] border border-white/5 space-y-1">
-              <div className="flex items-center space-x-1 text-stone-400 text-[10px] uppercase font-mono">
+              <div className="flex items-center space-x-1 text-stone-400 text-[10px] font-mono">
                 <Compass className="w-3 h-3 text-[#38bdf8]" />
-                <span>2. Current Mood</span>
+                <span>2. 当前身心情绪</span>
               </div>
-              <p className="text-white font-semibold text-[11px] capitalize flex items-center space-x-1">
+              <p className="text-white font-semibold text-[11px] flex items-center space-x-1">
                 <span>#{signals.currentMood}</span>
               </p>
             </div>
 
             {/* 3. History */}
             <div className="p-3 rounded-2xl bg-[#141830] border border-white/5 space-y-1">
-              <div className="flex items-center space-x-1 text-stone-400 text-[10px] uppercase font-mono">
+              <div className="flex items-center space-x-1 text-stone-400 text-[10px] font-mono">
                 <Clock className="w-3 h-3 text-[#c084fc]" />
-                <span>3. Listening History</span>
+                <span>3. 历史修习沉淀</span>
               </div>
               <p className="text-stone-200 font-medium text-[11px]">
-                {signals.listeningHistory.length} Sessions Logged
+                已记录 {signals.listeningHistory.length} 次静心修习
               </p>
             </div>
 
             {/* 4. Duration */}
             <div className="p-3 rounded-2xl bg-[#141830] border border-white/5 space-y-1">
-              <div className="flex items-center space-x-1 text-stone-400 text-[10px] uppercase font-mono">
+              <div className="flex items-center space-x-1 text-stone-400 text-[10px] font-mono">
                 <Sliders className="w-3 h-3 text-[#dfb76c]" />
-                <span>4. Session Duration</span>
+                <span>4. 偏好单次时长</span>
               </div>
               <p className="text-stone-200 font-medium text-[11px]">
-                {signals.preferredDuration} Minutes Window
+                最佳区间：{signals.preferredDuration} 分钟
               </p>
             </div>
 
             {/* 5. Time of Day */}
             <div className="p-3 rounded-2xl bg-[#141830] border border-white/5 space-y-1">
-              <div className="flex items-center space-x-1 text-stone-400 text-[10px] uppercase font-mono">
+              <div className="flex items-center space-x-1 text-stone-400 text-[10px] font-mono">
                 {signals.timeOfDay === 'night' ? <Moon className="w-3 h-3 text-indigo-400" /> : <Sun className="w-3 h-3 text-amber-400" />}
-                <span>5. Time of Day</span>
+                <span>5. 昼夜节律时辰</span>
               </div>
-              <p className="text-stone-200 font-medium text-[11px] capitalize">
-                {signals.timeOfDay} ({signals.currentHour}:00)
+              <p className="text-stone-200 font-medium text-[11px]">
+                {getTimeOfDayChinese(signals.timeOfDay)}（{signals.currentHour}:00）
               </p>
             </div>
 
             {/* 6. Favorite Categories */}
             <div className="p-3 rounded-2xl bg-[#141830] border border-white/5 space-y-1">
-              <div className="flex items-center space-x-1 text-stone-400 text-[10px] uppercase font-mono">
+              <div className="flex items-center space-x-1 text-stone-400 text-[10px] font-mono">
                 <Layers className="w-3 h-3 text-emerald-400" />
-                <span>6. Top Categories</span>
+                <span>6. 偏好音频类别</span>
               </div>
               <p className="text-stone-200 font-medium text-[11px] truncate">
-                {signals.favoriteCategories.length > 0 ? signals.favoriteCategories.join(', ') : 'Sleep, Healing'}
+                {signals.favoriteCategories.length > 0 ? signals.favoriteCategories.join('、') : '疗愈音乐、深度睡眠'}
               </p>
             </div>
           </div>
@@ -175,11 +185,11 @@ export const PersonalizationInfoModal: React.FC<PersonalizationInfoModalProps> =
         {/* Model Architecture Pluggability Switcher */}
         <div className="p-4 rounded-2xl bg-[#141830] border border-white/10 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-stone-300 flex items-center space-x-1">
+            <span className="text-[10px] font-mono font-bold tracking-wider text-stone-300 flex items-center space-x-1">
               <Cpu className="w-3.5 h-3.5 text-[#dfb76c]" />
-              <span>Pluggable Engine Adapter</span>
+              <span>可插拔算法内核适配器</span>
             </span>
-            <span className="text-[10px] text-stone-400 font-mono">Interface: RecommendationModelAdapter</span>
+            <span className="text-[10px] text-stone-400 font-mono">规范接口：RecommendationModelAdapter</span>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
@@ -192,11 +202,11 @@ export const PersonalizationInfoModal: React.FC<PersonalizationInfoModalProps> =
               }`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-bold text-white">Heuristic Engine</span>
+                <span className="text-xs font-bold text-white">启发式规则引擎</span>
                 {activeAdapterType === 'rule' && <Check className="w-3.5 h-3.5 text-[#dfb76c]" />}
               </div>
               <p className="text-[10px] text-stone-400 leading-snug">
-                Zero-latency, 100% deterministic rule scoring across all 7 signals.
+                零网络延迟，基于 7 维身心特征的实时确定性加权启发式打分。
               </p>
             </button>
 
@@ -209,11 +219,11 @@ export const PersonalizationInfoModal: React.FC<PersonalizationInfoModalProps> =
               }`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-bold text-white">AI Neural Adapter</span>
+                <span className="text-xs font-bold text-white">AI 深度神经适配器</span>
                 {activeAdapterType === 'ai' && <Check className="w-3.5 h-3.5 text-[#a599e0]" />}
               </div>
               <p className="text-[10px] text-stone-400 leading-snug">
-                Extensibility hook for Gemini / DeepMind neural embedding rankers.
+                支持对接 Gemini / 大模型语义共鸣嵌入的无缝排序扩展插槽。
               </p>
             </button>
           </div>
@@ -223,7 +233,7 @@ export const PersonalizationInfoModal: React.FC<PersonalizationInfoModalProps> =
         <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 text-[11px] text-stone-400 leading-relaxed flex items-start space-x-2">
           <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
           <span>
-            <strong>Wellness Architecture:</strong> This engine personalizes acoustic frequency resonance, session length, and circadian wind-down without acting as an AI therapist.
+            <strong>身心守护规范：</strong>本推荐引擎专注基于声学振动频率、昼夜节律及修习时长进行身心调频，不作为医疗或临床心理诊断替代。
           </span>
         </div>
       </div>

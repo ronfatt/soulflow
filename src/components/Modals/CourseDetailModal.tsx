@@ -22,7 +22,7 @@ export const CourseDetailModal: React.FC = () => {
       title: lesson.title,
       artistOrMentor: selectedCourse.mentorName,
       category: 'mentor_courses',
-      categoryLabel: 'Mentor Course',
+      categoryLabel: '导师大师课',
       mood: 'meditation',
       durationSeconds: 1500,
       durationFormatted: lesson.durationFormatted,
@@ -62,7 +62,7 @@ export const CourseDetailModal: React.FC = () => {
 
           <div className="absolute bottom-3 left-6 right-6">
             <span className="px-2 py-0.5 rounded-full bg-[#a599e0]/20 text-[#c4b5fd] text-[10px] font-bold uppercase tracking-wider border border-[#a599e0]/30">
-              Mentor Masterclass
+              导师大师课
             </span>
             <h2 className="text-lg font-bold text-white mt-1 leading-snug">{selectedCourse.title}</h2>
           </div>
@@ -77,7 +77,7 @@ export const CourseDetailModal: React.FC = () => {
             />
             <div>
               <h4 className="text-xs font-bold text-white">{selectedCourse.mentorName}</h4>
-              <p className="text-[11px] text-stone-400">Master Instructor • {selectedCourse.durationHours} Hours total</p>
+              <p className="text-[11px] text-stone-400">首席导师 • 共 {selectedCourse.durationHours} 小时</p>
             </div>
           </div>
 
@@ -86,7 +86,7 @@ export const CourseDetailModal: React.FC = () => {
           </p>
 
           <div className="space-y-2.5">
-            <h3 className="text-sm font-semibold text-white">Course Curriculum</h3>
+            <h3 className="text-sm font-semibold text-white">课程大纲与修习目录</h3>
             {selectedCourse.lessons.map((lesson) => (
               <div 
                 key={lesson.id}

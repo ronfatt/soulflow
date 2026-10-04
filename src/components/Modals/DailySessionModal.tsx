@@ -78,6 +78,17 @@ export const DailySessionModal: React.FC = () => {
 
   const allLessonsDone = day.lessons.every(l => completedLessons.includes(l.id));
 
+  const getContentTypeLabel = (type: string) => {
+    switch (type) {
+      case 'breathing': return '呼吸调息';
+      case 'meditation': return '正念冥想';
+      case 'healing_music': return '疗愈声波';
+      case 'soundscape': return '自然音境';
+      case 'reflection': return '觉察日志';
+      default: return '修习单元';
+    }
+  };
+
   return (
     <div 
       onClick={closeDailySession}
@@ -93,7 +104,7 @@ export const DailySessionModal: React.FC = () => {
             <span className="px-2.5 py-0.5 rounded-full bg-[#dfb76c]/15 text-[#dfb76c] text-[10px] font-mono font-bold uppercase tracking-wider border border-[#dfb76c]/30">
               {program.title}
             </span>
-            <span className="text-xs text-stone-400">• Day {dayNumber} of {program.totalDays}</span>
+            <span className="text-xs text-stone-400">• 第 {dayNumber} 天 / 共 {program.totalDays} 天</span>
           </div>
 
           <button 
@@ -110,7 +121,7 @@ export const DailySessionModal: React.FC = () => {
           <div className="space-y-2">
             <div className="flex items-center space-x-2 text-xs font-semibold text-[#a599e0]">
               <Flame className="w-3.5 h-3.5 text-[#dfb76c]" />
-              <span>Day {dayNumber} Protocol</span>
+              <span>第 {dayNumber} 天 身心调频方案</span>
             </div>
             <h2 className="text-2xl font-bold tracking-tight text-white">
               {day.title}
@@ -123,11 +134,11 @@ export const DailySessionModal: React.FC = () => {
           {/* Today's Intention Card */}
           <div className="p-4 rounded-2xl bg-[#171b35] border border-[#dfb76c]/25 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[#dfb76c]/5 rounded-full blur-2xl pointer-events-none" />
-            <span className="text-[10px] font-bold text-[#dfb76c] uppercase tracking-wider block font-mono">
-              Today's Sacred Intention
+            <span className="text-[10px] font-bold text-[#dfb76c] tracking-wider block font-mono">
+              今日神圣修习心意
             </span>
             <p className="text-xs text-stone-200 font-light italic mt-1 leading-relaxed">
-              "{day.intention || 'Allow your mind to let go of urgency and anchor into the present.'}"
+              "{day.intention || '允许思绪卸下紧迫与焦虑，安然锚定于当下的每一次呼吸。'}"
             </p>
           </div>
 
@@ -137,16 +148,16 @@ export const DailySessionModal: React.FC = () => {
               <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center border border-emerald-500/30">
                 <CheckCircle className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-bold text-white">Day {dayNumber} Completed</h3>
+              <h3 className="text-sm font-bold text-white">第 {dayNumber} 天 练习已圆满完成</h3>
               <p className="text-xs text-stone-300 font-light">
-                You have nourished your mind, body and spirit today. Honor your dedication.
+                今日你已悉心照拂了自己的身心与内在，感谢你的专注与坚持。
               </p>
               {dayNumber < program.totalDays && (
                 <button
                   onClick={() => openDailySession(program, dayNumber + 1)}
                   className="mt-2 px-4 py-1.5 rounded-full bg-emerald-500 text-[#0a0c16] text-xs font-semibold hover:bg-emerald-400 transition-colors inline-flex items-center space-x-1"
                 >
-                  <span>Preview Day {dayNumber + 1}</span>
+                  <span>预习第 {dayNumber + 1} 天</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               )}
@@ -155,8 +166,8 @@ export const DailySessionModal: React.FC = () => {
 
           {/* Lessons List */}
           <div className="space-y-3">
-            <h3 className="text-xs font-bold text-stone-400 uppercase tracking-wider font-mono">
-              Daily Sequence ({day.lessons.filter(l => completedLessons.includes(l.id)).length}/{day.lessons.length} Completed)
+            <h3 className="text-xs font-bold text-stone-400 tracking-wider font-mono">
+              今日修习序列（已完成 {day.lessons.filter(l => completedLessons.includes(l.id)).length}/{day.lessons.length}）
             </h3>
 
             <div className="space-y-2.5">
@@ -184,7 +195,7 @@ export const DailySessionModal: React.FC = () => {
                               ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' 
                               : 'bg-white/5 text-stone-400 hover:text-white hover:bg-white/10'
                           }`}
-                          title={isCompleted ? 'Mark uncompleted' : 'Mark completed'}
+                          title={isCompleted ? '标记为未完成' : '标记为已完成'}
                         >
                           {isCompleted ? <Check className="w-4 h-4" /> : `${idx + 1}`}
                         </button>
@@ -198,7 +209,7 @@ export const DailySessionModal: React.FC = () => {
                           </div>
                           <span className="text-[10px] text-stone-400 flex items-center space-x-1 mt-0.5 font-mono">
                             <Clock className="w-2.5 h-2.5" />
-                            <span>{lesson.duration} minutes • {lesson.content_type.replace('_', ' ')}</span>
+                            <span>{lesson.duration} 分钟 • {getContentTypeLabel(lesson.content_type)}</span>
                           </span>
                         </div>
                       </div>
@@ -213,7 +224,7 @@ export const DailySessionModal: React.FC = () => {
                                 ? 'bg-[#dfb76c] text-[#0a0c16]'
                                 : 'bg-white/10 hover:bg-white/15 text-stone-200'
                             }`}
-                            title="Play audio session"
+                            title="播放音频练习"
                           >
                             {isAudioPlaying ? (
                               <Volume2 className="w-3.5 h-3.5 animate-pulse" />
@@ -226,7 +237,7 @@ export const DailySessionModal: React.FC = () => {
                             onClick={() => setShowReflectionInput(!showReflectionInput)}
                             className="px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/15 text-stone-300 text-[10px] font-medium"
                           >
-                            {showReflectionInput ? 'Close' : 'Reflect'}
+                            {showReflectionInput ? '收起' : '记录觉察'}
                           </button>
                         )}
                       </div>
@@ -239,7 +250,7 @@ export const DailySessionModal: React.FC = () => {
                           rows={2}
                           value={reflectionText}
                           onChange={(e) => setReflectionText(e.target.value)}
-                          placeholder="Note down any insights or bodily shifts from today's practice..."
+                          placeholder="记录下今日练习带来的灵感洞见或身体的微妙舒展与感知..."
                           className="w-full p-2.5 rounded-xl bg-black/40 border border-white/10 text-xs text-stone-200 placeholder-stone-500 focus:outline-none focus:border-[#dfb76c]"
                         />
                         <div className="flex justify-end">
@@ -247,11 +258,11 @@ export const DailySessionModal: React.FC = () => {
                             onClick={() => {
                               handleToggleLesson(lesson);
                               setShowReflectionInput(false);
-                              showToast('Reflection recorded in your sanctuary 🌿');
+                              showToast('觉察手记已珍藏于您的圣殿日志 🌿');
                             }}
                             className="px-3 py-1 rounded-xl bg-[#dfb76c] text-[#0a0c16] text-[10px] font-bold"
                           >
-                            Save Reflection
+                            保存手记
                           </button>
                         </div>
                       </div>
@@ -271,7 +282,7 @@ export const DailySessionModal: React.FC = () => {
               className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#dfb76c] to-[#f3cf7a] text-[#0a0c16] font-bold text-xs shadow-gold-glow flex items-center justify-center space-x-2 active:scale-98 transition-transform"
             >
               <CheckCircle className="w-4 h-4" />
-              <span>Complete Day {dayNumber} Session</span>
+              <span>完成今日修习</span>
             </button>
           )}
         </div>
