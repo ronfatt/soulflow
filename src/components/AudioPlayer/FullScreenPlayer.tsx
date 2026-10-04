@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { useAudio } from '../../context/AudioContext';
 import { useApp } from '../../context/AppContext';
+import { audioEngine } from '../../utils/audioEngine';
 
 export const FullScreenPlayer: React.FC = () => {
   const { 
@@ -78,6 +79,21 @@ export const FullScreenPlayer: React.FC = () => {
     forest: { active: false, volume: 45, name: '深山松涛', icon: Trees },
     bowl: { active: true, volume: 35, name: '水晶颂钵', icon: Bell },
   });
+
+  // Connect to real acoustic ambient generator
+  useEffect(() => {
+    if (!isPlaying) {
+      Object.keys(ambientLayers).forEach(k => {
+        const engineKey = k === 'ocean' ? 'waves' : (k === 'forest' ? 'wind' : k);
+        audioEngine.setAmbientLayer(engineKey, 0);
+      });
+      return;
+    }
+    Object.entries(ambientLayers).forEach(([key, item]) => {
+      const engineKey = key === 'ocean' ? 'waves' : (key === 'forest' ? 'wind' : key);
+      audioEngine.setAmbientLayer(engineKey, item.active ? item.volume : 0);
+    });
+  }, [ambientLayers, isPlaying]);
 
   // Dynamic Breathing Cycle based on Selected Mode
   useEffect(() => {

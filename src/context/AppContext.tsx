@@ -192,8 +192,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [programs, setPrograms] = useState<Program[]>(PROGRAMS);
   const [courses] = useState<Course[]>(COURSES);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [favorites, setFavorites] = useState<string[]>(['d0000000-0000-0000-0000-000000000001', 'd0000000-0000-0000-0000-000000000005']);
-  const [downloads, setDownloads] = useState<string[]>(['d0000000-0000-0000-0000-000000000001']);
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    const saved = localStorage.getItem('soulflow_favorites');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (_) {}
+    }
+    return ['d0000000-0000-0000-0000-000000000001', 'd0000000-0000-0000-0000-000000000005'];
+  });
+  const [downloads, setDownloads] = useState<string[]>(() => {
+    const saved = localStorage.getItem('soulflow_downloads');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (_) {}
+    }
+    return ['d0000000-0000-0000-0000-000000000001'];
+  });
   const [listeningHistory, setListeningHistory] = useState<string[]>(() => {
     const saved = localStorage.getItem('soulflow_listening_history');
     if (saved) {
@@ -304,6 +316,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     localStorage.setItem('soulflow_streak_info', JSON.stringify(streakInfo));
   }, [streakInfo]);
+
+  useEffect(() => {
+    localStorage.setItem('soulflow_user', JSON.stringify(user));
+  }, [user]);
+
+  useEffect(() => {
+    localStorage.setItem('soulflow_favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  useEffect(() => {
+    localStorage.setItem('soulflow_downloads', JSON.stringify(downloads));
+  }, [downloads]);
+
+  useEffect(() => {
+    if (playlists.length > 0) {
+      localStorage.setItem(`soulflow_playlists_${user.id}`, JSON.stringify(playlists));
+    }
+  }, [playlists, user.id]);
 
   // URL Referral auto-detection: https://appdomain.com/signup?ref=ALICE888
   useEffect(() => {

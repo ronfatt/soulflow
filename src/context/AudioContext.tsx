@@ -177,6 +177,47 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return () => clearInterval(timer);
   }, [sleepTimerRemaining]);
 
+  // MediaSession API for mobile lock-screen & Bluetooth controls (iOS & Android)
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('mediaSession' in navigator)) return;
+
+    if (currentTrack) {
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: currentTrack.title,
+          artist: currentTrack.artistOrMentor,
+          album: 'SoulFlow 空间音频 · 身心圣殿',
+          artwork: [
+            { src: currentTrack.coverUrl, sizes: '96x96', type: 'image/jpeg' },
+            { src: currentTrack.coverUrl, sizes: '128x128', type: 'image/jpeg' },
+            { src: currentTrack.coverUrl, sizes: '256x256', type: 'image/jpeg' },
+            { src: currentTrack.coverUrl, sizes: '512x512', type: 'image/jpeg' },
+          ],
+        });
+      } catch (_) {}
+    }
+
+    try {
+      navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+    } catch (_) {}
+
+    const actionHandlers: Array<[MediaSessionAction, MediaSessionActionHandler]> = [
+      ['play', () => resume()],
+      ['pause', () => pause()],
+      ['previoustrack', () => prevTrack()],
+      ['nexttrack', () => nextTrack()],
+      ['seekto', (details) => { if (details.seekTime !== undefined) seek(details.seekTime); }],
+      ['seekforward', (details) => { seek(Math.min(duration, currentTime + (details.seekOffset || 15))); }],
+      ['seekbackward', (details) => { seek(Math.max(0, currentTime - (details.seekOffset || 15))); }],
+    ];
+
+    actionHandlers.forEach(([action, handler]) => {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch (_) {}
+    });
+  }, [currentTrack, isPlaying, currentTime, duration]);
+
   const playTrack = (track: Track, queueList?: Track[], resumeProgress?: number) => {
     setCurrentTrack(track);
     setDuration(track.durationSeconds);

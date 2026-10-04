@@ -18,9 +18,11 @@ import {
   Check,
   Copy,
   Award,
-  Users
+  Users,
+  Smartphone
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { InstallAppModal } from '../components/Modals/InstallAppModal';
 
 export const ProfileView: React.FC = () => {
   const { 
@@ -44,6 +46,7 @@ export const ProfileView: React.FC = () => {
   const [copiedReferral, setCopiedReferral] = useState(false);
   const [showReferralModal, setShowReferralModal] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const [showInstallModal, setShowInstallModal] = useState(false);
 
   const followedMentorsList = mentors.filter(m => followingMentors.includes(m.id));
   const referringMentor = mentors.find(m => m.referralCode === user.referredByCode);
@@ -122,6 +125,13 @@ export const ProfileView: React.FC = () => {
     {
       title: t('profileSettings'),
       items: [
+        { 
+          label: language === 'zh' ? '安装到手机桌面 (PWA 原生体验)' : 'Install to Home Screen (PWA)', 
+          icon: Smartphone, 
+          value: language === 'zh' ? '离线与无边框' : 'Standalone App', 
+          highlight: true,
+          action: () => setShowInstallModal(true) 
+        },
         { 
           label: language === 'zh' ? '推送与正念提醒' : 'Notification Settings', 
           icon: Bell, 
@@ -428,6 +438,12 @@ export const ProfileView: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Standalone PWA Installation Guide Modal */}
+      <InstallAppModal
+        isOpen={showInstallModal}
+        onClose={() => setShowInstallModal(false)}
+      />
     </div>
   );
 };

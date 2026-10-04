@@ -160,6 +160,164 @@ class SoulFlowAudioEngine {
     this.oscillators.push(swell);
   }
 
+  private ambientNodes: Record<string, { gainNode: GainNode; stop: () => void }> = {};
+
+  public setAmbientLayer(layerId: string, volumePercent: number) {
+    try {
+      this.initContext();
+      if (!this.ctx || !this.masterGain) return;
+
+      const normVolume = Math.max(0, Math.min(1, volumePercent / 100));
+
+      if (normVolume <= 0) {
+        if (this.ambientNodes[layerId]) {
+          try {
+            this.ambientNodes[layerId].gainNode.gain.setValueAtTime(0, this.ctx.currentTime);
+            this.ambientNodes[layerId].stop();
+          } catch (_) {}
+          delete this.ambientNodes[layerId];
+        }
+        return;
+      }
+
+      // If already playing, adjust volume
+      if (this.ambientNodes[layerId]) {
+        this.ambientNodes[layerId].gainNode.gain.setValueAtTime(normVolume * 0.35, this.ctx.currentTime);
+        return;
+      }
+
+      // Start layer synthesizer
+      const t = this.ctx.currentTime;
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(normVolume * 0.35, t);
+      gain.connect(this.masterGain);
+
+      let stopFn = () => {};
+
+      if (layerId === 'rain') {
+        const bufferSize = this.ctx.sampleRate * 2;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * 0.15;
+        }
+        const src = this.ctx.createBufferSource();
+        src.buffer = buffer;
+        src.loop = true;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(1400, t);
+        filter.Q.setValueAtTime(1.5, t);
+
+        src.connect(filter);
+        filter.connect(gain);
+        src.start();
+        stopFn = () => { try { src.stop(); src.disconnect(); } catch (_) {} };
+      } else if (layerId === 'waves') {
+        const bufferSize = this.ctx.sampleRate * 2;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        let lastOut = 0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          lastOut = (lastOut + 0.02 * white) / 1.02;
+          data[i] = lastOut * 0.4;
+        }
+        const src = this.ctx.createBufferSource();
+        src.buffer = buffer;
+        src.loop = true;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(400, t);
+
+        const swell = this.ctx.createOscillator();
+        const swellGain = this.ctx.createGain();
+        swell.frequency.setValueAtTime(0.08, t);
+        swellGain.gain.setValueAtTime(250, t);
+        swell.connect(filter.frequency);
+
+        src.connect(filter);
+        filter.connect(gain);
+        src.start();
+        swell.start();
+        stopFn = () => { try { src.stop(); swell.stop(); } catch (_) {} };
+      } else if (layerId === 'fire') {
+        const bufferSize = this.ctx.sampleRate * 2;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          const isPop = Math.random() < 0.002;
+          data[i] = isPop ? (Math.random() * 2 - 1) * 0.6 : (Math.random() * 2 - 1) * 0.03;
+        }
+        const src = this.ctx.createBufferSource();
+        src.buffer = buffer;
+        src.loop = true;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1200, t);
+
+        src.connect(filter);
+        filter.connect(gain);
+        src.start();
+        stopFn = () => { try { src.stop(); src.disconnect(); } catch (_) {} };
+      } else if (layerId === 'wind') {
+        const bufferSize = this.ctx.sampleRate * 2;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * 0.12;
+        }
+        const src = this.ctx.createBufferSource();
+        src.buffer = buffer;
+        src.loop = true;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(320, t);
+        filter.Q.setValueAtTime(3.0, t);
+
+        const lfo = this.ctx.createOscillator();
+        const lfoGain = this.ctx.createGain();
+        lfo.frequency.setValueAtTime(0.1, t);
+        lfoGain.gain.setValueAtTime(150, t);
+        lfo.connect(filter.frequency);
+
+        src.connect(filter);
+        filter.connect(gain);
+        src.start();
+        lfo.start();
+        stopFn = () => { try { src.stop(); lfo.stop(); } catch (_) {} };
+      } else if (layerId === 'bowl') {
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        osc1.type = 'sine';
+        osc2.type = 'sine';
+        osc1.frequency.setValueAtTime(432, t);
+        osc2.frequency.setValueAtTime(864, t);
+
+        const tremolo = this.ctx.createOscillator();
+        const tremoloGain = this.ctx.createGain();
+        tremolo.frequency.setValueAtTime(0.2, t);
+        tremoloGain.gain.setValueAtTime(0.08, t);
+        tremolo.connect(gain.gain);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        osc1.start();
+        osc2.start();
+        tremolo.start();
+        stopFn = () => { try { osc1.stop(); osc2.stop(); tremolo.stop(); } catch (_) {} };
+      }
+
+      this.ambientNodes[layerId] = { gainNode: gain, stop: stopFn };
+    } catch (e) {
+      console.warn('setAmbientLayer error:', e);
+    }
+  }
+
   public setVolume(val: number) {
     if (this.masterGain && this.ctx) {
       this.masterGain.gain.setValueAtTime(Math.max(0, Math.min(1, val * 0.4)), this.ctx.currentTime);
@@ -176,6 +334,10 @@ class SoulFlowAudioEngine {
         try { this.noiseNode.disconnect(); } catch (_) {}
         this.noiseNode = null;
       }
+      Object.keys(this.ambientNodes).forEach(k => {
+        try { this.ambientNodes[k].stop(); } catch (_) {}
+      });
+      this.ambientNodes = {};
       this.isSynthesizing = false;
     } catch (_) {}
   }

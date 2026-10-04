@@ -1,0 +1,25 @@
+{
+  "name": "SoulFlow 心流",
+  "short_name": "SoulFlow",
+  "description": "心流身心灵音乐与正念生活平台 — 空间音频与脑波同步调频",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#05070e",
+  "theme_color": "#080a14",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["wellness", "music", "lifestyle", "health"]
+}
