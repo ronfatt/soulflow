@@ -19,7 +19,8 @@ import {
   Copy,
   Award,
   Users,
-  Smartphone
+  Smartphone,
+  BookOpen
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { InstallAppModal } from '../components/Modals/InstallAppModal';
@@ -38,6 +39,8 @@ export const ProfileView: React.FC = () => {
     followingMentors,
     streakInfo,
     openMentorDetail,
+    openAISanctuary,
+    journalEntries,
     language,
     setLanguage,
     t
@@ -79,6 +82,20 @@ export const ProfileView: React.FC = () => {
           value: user.membershipStatus === 'free' ? t('planFree') : (user.membershipStatus === 'premium' ? t('planPremium') : t('planPremiumPlus')), 
           action: () => setShowMembershipModal(true), 
           highlight: true 
+        },
+        { 
+          label: language === 'zh' ? '我的身心灵日志 (Soul Journal)' : 'My Soul Journal', 
+          icon: BookOpen, 
+          value: `${journalEntries.length} ${language === 'zh' ? '篇觉察' : 'entries'}`, 
+          highlight: true,
+          action: () => openAISanctuary('journal') 
+        },
+        { 
+          label: language === 'zh' ? 'AI 心灵导师 1v1 倾听与处方' : '1v1 AI Soul Guide', 
+          icon: Sparkles, 
+          value: language === 'zh' ? '在线' : 'Online', 
+          highlight: true,
+          action: () => openAISanctuary('chat') 
         },
         { 
           label: language === 'zh' ? '我的蜕变旅程' : 'My Journey', 

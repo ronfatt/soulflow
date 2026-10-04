@@ -391,4 +391,57 @@ export interface AdminReferralStats {
   arr: number;
 }
 
+export interface RitualStep {
+  stepNumber: number;
+  title: string;
+  instruction: string;
+  duration?: string;
+}
+
+export interface HealingRitual {
+  id: string;
+  title: string;
+  subtitle: string;
+  durationMinutes: number;
+  frequency: string;
+  targetState: string;
+  description: string;
+  steps: RitualStep[];
+  recommendedTrackId: string;
+  recommendedAmbientLayer?: 'rain' | 'waves' | 'fire' | 'wind' | 'bowl';
+}
+
+export interface AIMessage {
+  id: string;
+  sender: 'ai' | 'user';
+  text: string;
+  timestamp: string;
+  quickOptions?: string[];
+  ritualRecommendation?: HealingRitual;
+  musicPrescription?: {
+    frequency: string;
+    listeningMethod: string;
+    trackId: string;
+    trackTitle: string;
+    mentorName: string;
+    targetBenefit: string;
+  };
+}
+
+export interface SoulJournalEntry {
+  id: string;
+  userId: string;
+  createdAt: string;
+  moodState: string;
+  somaticFeeling?: string;
+  summary: string;
+  affirmation: string;
+  recommendedTrackId?: string;
+  recommendedTrackTitle?: string;
+  recommendedRitualTitle?: string;
+  userNotes?: string;
+  tags: string[];
+}
+
 export * from './personalization';
+

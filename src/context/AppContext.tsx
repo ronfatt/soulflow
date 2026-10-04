@@ -22,7 +22,9 @@ import {
   AuditLog,
   PaymentProvider,
   CommissionType,
-  BillingCycle
+  BillingCycle,
+  SoulJournalEntry,
+  HealingRitual
 } from '../types';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { 
@@ -45,6 +47,7 @@ import { subscriptionService } from '../services/subscriptionService';
 import { paymentService } from '../services/paymentService';
 import { payoutService } from '../services/payoutService';
 import { authService } from '../services/authService';
+import { aiSanctuaryService } from '../services/aiSanctuaryService';
 
 export type MainTab = 'home' | 'explore' | 'journey' | 'library' | 'profile';
 
@@ -138,6 +141,15 @@ interface AppContextType {
   deleteTrack: (id: string) => void;
   addMentor: (mentor: Omit<Mentor, 'id' | 'followersCount' | 'studentsCount' | 'rating'>) => void;
   updateCommissionStatus: (commissionId: string, status: CommissionStatus) => void;
+  // AI Sanctuary & Soul Journal
+  showAISanctuary: boolean;
+  aiSanctuaryTab: 'chat' | 'journal' | 'rituals';
+  openAISanctuary: (tab?: 'chat' | 'journal' | 'rituals') => void;
+  closeAISanctuary: () => void;
+  journalEntries: SoulJournalEntry[];
+  saveJournalEntry: (entry: SoulJournalEntry) => void;
+  updateJournalNotes: (entryId: string, notes: string) => void;
+  deleteJournalEntry: (entryId: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -224,10 +236,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [showMembershipModal, setShowMembershipModal] = useState<boolean>(false);
   const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
+  const [showAISanctuary, setShowAISanctuary] = useState<boolean>(false);
+  const [aiSanctuaryTab, setAiSanctuaryTab] = useState<'chat' | 'journal' | 'rituals'>('chat');
   const [isAdminView, setIsAdminView] = useState<boolean>(false);
   const [isMentorView, setIsMentorView] = useState<boolean>(false);
   const [isMobileFrame, setIsMobileFrame] = useState<boolean>(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Soul Journal entries state
+  const [journalEntries, setJournalEntries] = useState<SoulJournalEntry[]>(() => {
+    return aiSanctuaryService.getJournalEntries(user.id);
+  });
 
   // Mentor Following state with persistence
   const [followingMentors, setFollowingMentors] = useState<string[]>(() => {
@@ -880,6 +899,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast(`Commission marked as ${status}`);
   };
 
+  const openAISanctuary = (tab: 'chat' | 'journal' | 'rituals' = 'chat') => {
+    setAiSanctuaryTab(tab);
+    setShowAISanctuary(true);
+  };
+
+  const closeAISanctuary = () => {
+    setShowAISanctuary(false);
+  };
+
+  const saveJournalEntry = (entry: SoulJournalEntry) => {
+    const updated = aiSanctuaryService.saveJournalEntry(entry);
+    setJournalEntries(updated);
+  };
+
+  const updateJournalNotes = (entryId: string, notes: string) => {
+    const updated = aiSanctuaryService.updateJournalNotes(user.id, entryId, notes);
+    setJournalEntries(updated);
+    showToast(language === 'zh' ? '个人感悟已保存至日志' : 'Notes saved to journal');
+  };
+
+  const deleteJournalEntry = (entryId: string) => {
+    const updated = aiSanctuaryService.deleteJournalEntry(user.id, entryId);
+    setJournalEntries(updated);
+    showToast(language === 'zh' ? '日志记录已删除' : 'Journal entry removed');
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -908,6 +953,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         showMembershipModal,
         showOnboarding,
         showAuthModal,
+        showAISanctuary,
+        aiSanctuaryTab,
+        openAISanctuary,
+        closeAISanctuary,
+        journalEntries,
+        saveJournalEntry,
+        updateJournalNotes,
+        deleteJournalEntry,
         showCheckoutModal,
         checkoutParams,
         isAdminView,

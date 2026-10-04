@@ -19,14 +19,15 @@ import { MembershipModal } from './components/Modals/MembershipModal';
 import { CheckoutModal } from './components/Modals/CheckoutModal';
 import { OnboardingModal } from './components/Modals/OnboardingModal';
 import { AuthModal } from './components/Modals/AuthModal';
-import { Smartphone, Monitor, ShieldCheck, Sparkles, Wifi, Battery, Award, ChevronDown, Compass } from 'lucide-react';
+import { AISanctuaryModal } from './components/AISanctuary/AISanctuaryModal';
+import { Smartphone, Monitor, ShieldCheck, Sparkles, Wifi, Battery, Award, ChevronDown, Compass, BookOpen } from 'lucide-react';
 
 export const App: React.FC = () => {
   const { 
     activeTab, 
     isAdminView, 
     setIsAdminView, 
-    isMentorView,
+    isMentorView, 
     setIsMentorView,
     isMobileFrame, 
     setIsMobileFrame, 
@@ -37,6 +38,7 @@ export const App: React.FC = () => {
     checkoutParams,
     openCheckoutModal,
     closeCheckoutModal,
+    openAISanctuary,
     language,
     t 
   } = useApp();
@@ -112,10 +114,18 @@ export const App: React.FC = () => {
                 onMouseLeave={() => setShowPortalMenu(false)}
               >
                 <button
+                  onClick={() => { openAISanctuary('chat'); setShowPortalMenu(false); }}
+                  className="w-full px-3 py-2 rounded-xl text-left text-xs text-[#dfb76c] hover:bg-[#dfb76c]/10 flex items-center space-x-2 transition-colors font-medium"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-[#dfb76c]" />
+                  <span>{language === 'zh' ? 'AI 心灵导师 1v1 倾听与日志' : 'AI Sanctuary Guide & Journal'}</span>
+                </button>
+
+                <button
                   onClick={() => { setShowOnboarding(true); setShowPortalMenu(false); }}
                   className="w-full px-3 py-2 rounded-xl text-left text-xs text-stone-300 hover:text-white hover:bg-white/5 flex items-center space-x-2 transition-colors"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-[#dfb76c]" />
+                  <Sparkles className="w-3.5 h-3.5 text-stone-400" />
                   <span>{language === 'zh' ? '身心偏好问卷 (Onboarding)' : 'Onboarding Journey'}</span>
                 </button>
 
@@ -201,6 +211,7 @@ export const App: React.FC = () => {
         />
         <OnboardingModal />
         <AuthModal />
+        <AISanctuaryModal />
 
         {/* Toast Notification Banner */}
         {toastMessage && (

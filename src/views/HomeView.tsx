@@ -12,7 +12,8 @@ import {
   Heart, 
   Sun,
   Flame,
-  Radio
+  Radio,
+  BookOpen
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useAudio } from '../context/AudioContext';
@@ -35,6 +36,8 @@ export const HomeView: React.FC = () => {
     followingMentors,
     setShowMembershipModal,
     setActiveTab,
+    openAISanctuary,
+    journalEntries,
     t,
     language
   } = useApp();
@@ -176,6 +179,64 @@ export const HomeView: React.FC = () => {
 
       {/* Main Mood Prompt: "How are you feeling today?" */}
       <MoodSelector />
+
+      {/* AI Spiritual Companion & Soul Sanctuary Card */}
+      <div className="relative p-4 rounded-3xl bg-gradient-to-br from-[#1c1735]/90 via-[#101428]/95 to-[#0b0e1e] border border-[#dfb76c]/30 shadow-2xl overflow-hidden group">
+        <div className="absolute top-0 right-0 w-44 h-44 rounded-full bg-[#dfb76c]/15 blur-3xl pointer-events-none -z-0" />
+        
+        <div className="relative z-10 flex items-start space-x-3.5">
+          <div className="relative flex-shrink-0">
+            <div className="w-12 h-12 rounded-2xl overflow-hidden border border-[#dfb76c]/50 p-0.5 shadow-gold-glow">
+              <img 
+                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" 
+                alt="Alicia" 
+                className="w-full h-full object-cover rounded-xl"
+              />
+            </div>
+            <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-[#101428] animate-pulse" />
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center space-x-2">
+              <span className="px-2 py-0.5 rounded-full bg-[#dfb76c]/20 text-[#dfb76c] font-mono text-[9px] font-bold tracking-wider">
+                1V1 AI 导师
+              </span>
+              <span className="text-[10px] text-stone-400 font-mono">
+                {language === 'zh' ? '随时在线倾听' : 'Available 24/7'}
+              </span>
+            </div>
+
+            <h3 className="font-serif text-sm font-semibold text-white mt-1">
+              {language === 'zh' ? 'AI 心灵导师 1v1 倾听与定制处方' : '1v1 AI Soul Guide & Prescription'}
+            </h3>
+
+            <p className="text-[11px] text-stone-300 font-light mt-0.5 leading-relaxed">
+              {language === 'zh' 
+                ? '感到困惑或疲惫？与导师 Alicia 深度交流，定制此刻的音乐疗愈仪式与身心日志。'
+                : 'Feeling tense or overwhelmed? Speak with Alicia to receive acoustic prescriptions and healing rituals.'}
+            </p>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="relative z-10 grid grid-cols-2 gap-2 mt-3.5 pt-3 border-t border-white/[0.08]">
+          <button
+            onClick={() => openAISanctuary('chat')}
+            className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#dfb76c] to-[#f3cf7a] text-[#0a0c16] font-bold text-xs shadow-gold-glow flex items-center justify-center space-x-1.5 active:scale-95 transition-transform"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>{language === 'zh' ? '开启 1v1 倾听' : 'Start 1v1 Guide'}</span>
+          </button>
+
+          <button
+            onClick={() => openAISanctuary('journal')}
+            className="py-2.5 px-3 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-stone-200 border border-white/10 font-medium text-xs flex items-center justify-center space-x-1.5 active:scale-95 transition-all"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-[#dfb76c]" />
+            <span>{language === 'zh' ? '身心灵日志' : 'Soul Journal'} ({journalEntries.length})</span>
+          </button>
+        </div>
+      </div>
 
       {/* CONTINUE YOUR JOURNEY */}
       {activeJourneyProgram && activeJourneyProg && (
